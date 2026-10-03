@@ -1,0 +1,16 @@
+{
+  "checked": "2026-10-01, all returned HTTP 200 (protobuf)",
+  "decode_with": "pip install gtfs-realtime-bindings  (google.transit.gtfs_realtime_pb2.FeedMessage)",
+  "feeds": {
+    "bus_vehicle_positions": "https://gtfs.ztp.krakow.pl/VehiclePositions_A.pb",
+    "tram_vehicle_positions": "https://gtfs.ztp.krakow.pl/VehiclePositions_T.pb",
+    "bus_trip_updates": "https://gtfs.ztp.krakow.pl/TripUpdates_A.pb",
+    "tram_trip_updates": "https://gtfs.ztp.krakow.pl/TripUpdates_T.pb",
+    "bus_service_alerts": "https://gtfs.ztp.krakow.pl/ServiceAlerts_A.pb",
+    "tram_service_alerts": "https://gtfs.ztp.krakow.pl/ServiceAlerts_T.pb"
+  },
+  "static": {
+    "bus": "https://gtfs.ztp.krakow.pl/GTFS_KRK_A.zip",
+    "tram": "https://gtfs.ztp.krakow.pl/GTFS_KRK_T.zip"
+  }
+}
