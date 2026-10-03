@@ -1,0 +1,16 @@
+/* Director styles, scoped under .director */
+.director { --ink: #1d2a36; --muted: #5b6b7a; --line: #d9e1e8; --accent: #1f4e79;
+            max-width: 900px; margin: 0 auto; padding: 1rem; color: var(--ink);
+            font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.director *, .director *::before, .director *::after { box-sizing: border-box; }
+.director .form { display: grid; gap: .7rem; background: #fff; padding: 1rem; border-radius: 12px; border: 1px solid var(--line); }
+.director label { display: grid; gap: .3rem; }
+.director input, .director select { font: inherit; padding: .5rem .6rem; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.director button { font: inherit; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: .55rem .8rem; cursor: pointer; color: var(--ink); }
+.director button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.director button.on { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.director .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.director .muted { color: var(--muted); font-size: .9rem; }
+.director .status { margin-top: 1rem; }
+.director table { border-collapse: collapse; width: 100%; background: #fff; font-size: .9rem; }
+.director th, .director td { text-align: left; padding: .35rem .5rem; border-bottom: 1px solid var(--line); }

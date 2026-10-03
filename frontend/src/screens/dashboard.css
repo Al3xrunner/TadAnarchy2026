@@ -1,0 +1,41 @@
+/* Dashboard styles, scoped under .dashboard */
+.dashboard { --ink: #1d2a36; --muted: #5b6b7a; --line: #d9e1e8; --accent: #1f4e79;
+             display: grid; grid-template-columns: 400px 1fr; height: 100dvh; color: var(--ink);
+             font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
+.dashboard *, .dashboard *::before, .dashboard *::after { box-sizing: border-box; }
+.dashboard.center { display: grid; place-items: center; grid-template-columns: 1fr; }
+.dashboard aside { overflow: auto; padding: 1rem 1.1rem; background: #fff; border-right: 1px solid var(--line); }
+.dashboard main { position: relative; min-height: 0; }
+.dashboard h1 { font-size: 1.25rem; margin: 0 0 .2rem; }
+.dashboard select { font: inherit; padding: .5rem .6rem; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.dashboard button { font: inherit; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: .4rem .7rem; cursor: pointer; }
+.dashboard .muted { color: var(--muted); font-size: .9rem; }
+.dashboard .note { color: #7a5200; }
+.dashboard .warn { color: #b3261e; font-weight: 600; }
+.dashboard .ok { color: #2e7d32; font-weight: 600; }
+.dashboard .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; background: #e0a030; margin-left: .3rem; }
+.dashboard .dot.live { background: #2e7d32; }
+.dashboard .dot.lost { background: #b3261e; }
+.dashboard .chip { font-size: .78rem; padding: .1rem .5rem; border-radius: 999px; background: #eef2f5; margin: 0 .3rem; white-space: nowrap; }
+.dashboard .chip.official { background: #dbe8f5; color: #1f4e79; }
+.dashboard .chip.residents { background: #fde2e4; color: #8e1b2b; }
+.dashboard .chip.possible { background: #fff3d6; color: #7a5200; }
+.dashboard .kpis { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; margin: .8rem 0; }
+.dashboard .kpis div { background: #f3f6f9; border-radius: 10px; padding: .55rem .7rem; font-size: .82rem; color: var(--muted); }
+.dashboard .kpis b { display: block; font-size: 1.35rem; color: var(--ink); }
+.dashboard .card { border: 1px solid var(--line); border-left: 6px solid #ccc; border-radius: 10px; padding: .55rem .7rem; margin: .5rem 0; cursor: pointer; }
+.dashboard .card.level2 { border-left-color: #d1495b; }
+.dashboard .card.level1 { border-left-color: #e0a030; }
+.dashboard .card.sel { box-shadow: 0 0 0 2px var(--accent); }
+.dashboard .card.related { opacity: .7; border-left-style: dashed; }
+/* the incident details, docked in the sidebar (IncidentSheet with docked) */
+.dashboard .panel { position: relative; border: 1px solid var(--line); border-radius: 12px; padding: .8rem; margin: .6rem 0; background: #fbfcfd; }
+.dashboard .panel h2 { margin: 0 0 .4rem; font-size: 1.1rem; padding-right: 2rem; }
+.dashboard .panel p { margin: .45rem 0; }
+.dashboard .panel .close { position: absolute; right: .6rem; top: .5rem; border: 0; font-size: 1.4rem; background: none; }
+.dashboard .official { background: #eef4fb; border-radius: 8px; padding: .4rem .6rem; }
+.dashboard .notice { font-size: .88rem; padding: .3rem 0; border-bottom: 1px solid var(--line); }
+@media (max-width: 800px) {
+  .dashboard { grid-template-columns: 1fr; grid-template-rows: 50vh 50vh; }
+  .dashboard main { order: -1; }
+}

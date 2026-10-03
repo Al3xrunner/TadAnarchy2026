@@ -42,3 +42,18 @@ export function staticJson(path) {
   }
   return cache.get(path)
 }
+export async function director(path, body) {
+  const r = await fetch(`/api/director/${path}`, {
+    method: body ? 'POST' : 'GET',
+    headers: { 'Content-Type': 'application/json', 'X-Director-Token': localStorage.getItem('director_token') ?? '' },
+    body: body ? JSON.stringify(body) : undefined,
+  })
+  if (!r.ok) throw new Error(`${r.status} ${await r.text()}`)
+  return r.json()
+}
+
+export async function getJson(url) {
+  const r = await fetch(url)
+  if (!r.ok) throw new Error(`${r.status} ${url}`)
+  return r.json()
+}

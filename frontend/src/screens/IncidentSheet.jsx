@@ -6,14 +6,14 @@ const FACILITY_PL = {
 }
 
 /** Bottom sheet with everything about one incident. Pass the incident from the latest snapshot so it updates live. */
-export default function IncidentSheet({ incident: i, simT, home, related, onClose, onMeToo, onFine }) {
+export default function IncidentSheet({ incident: i, simT, home, related, docked, onClose, onMeToo, onFine }) {
   const cat = CATEGORY[i.cat]
   const minutes = Math.max(0, Math.round((simT - i.first_t) / 60))
   const affected = home ? i.footprint_cells10.includes(home.cell10) : null
   const official = i.sources.find((s) => s.kind === 'official')
 
   return (
-    <div className="sheet">
+    <div className={docked ? 'panel' : 'sheet'}>
       <button className="close" onClick={onClose} aria-label="Close">×</button>
       <h2 style={{ color: cat.color }}>{cat.pl} · {i.district}</h2>
       <span className={`chip ${i.confidence}`}>{i.label}</span>

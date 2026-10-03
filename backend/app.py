@@ -38,7 +38,7 @@ def create_app(start_engine=True):
     from db.load import register_cli
     register_cli(app)
 
-    # Optional: serve the built frontend (npm run build) from the same port, e.g. for the demo laptop
+    
     dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
     @app.get("/")
@@ -60,6 +60,5 @@ def create_app(start_engine=True):
 
 
 if __name__ == "__main__":
-    # use_reloader=False: the reloader imports the app twice = two engine threads
     create_app().run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), threaded=True,
                      debug=True, use_reloader=False)
