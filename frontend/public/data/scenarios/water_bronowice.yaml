@@ -1,0 +1,24 @@
+
+id: water_bronowice
+title: "Water-main failure – Bronowicka / Przybyszewskiego (Wodociągi)"
+based_on_real_event: true
+start_clock: "15:30"
+seed: 7
+recommended_users: 50000        
+background:
+  reports_per_user_per_day: 0.02
+incidents:
+  - id: water
+    category: water
+    mode: residents
+    area: {file: scenarios/areas/water_bronowice.geojson, feature: actual}   
+    start_min: 10
+    end_min: 270                  
+    p_report: 0.5                 
+    delay: {median_min: 12, sigma: 0.7}
+events:
+  - {at_min: 50, type: notice_add, file: scenarios/notices/wodociagi_water_bronowice.json}
+expected:
+  residents_in_actual_area: 788
+  residents_in_official_area: 108
+  demo_point: "incident.wider_than_official == true (crowd sees more streets than the notice lists)"

@@ -1,0 +1,16 @@
+{
+  "id": "news-flood-biezanow",
+  "source": "Radio Kraków",
+  "kind": "news",
+  "category": "flood",
+  "title": "Ulewa nad Bieżanowem. Zalana ul. Bieżanowska",
+  "title_en": "Cloudburst over Bieżanów floods Bieżanowska street",
+  "summary": "A very local downpour flooded Bieżanowska and the entrance to the tram loop, while the city centre 9 km away stayed dry. Trams were shortened to Prokocim.",
+  "summary_pl": "Bardzo lokalna ulewa zalała ul. Bieżanowską i wjazd na pętlę tramwajową; w centrum, 9 km dalej, nie padało. Tramwaje skrócono do Prokocimia.",
+  "cause": "Very local cloudburst over south-eastern Kraków",
+  "cause_pl": "Gwałtowna, lokalna ulewa nad południowo-wschodnimi dzielnicami",
+  "area_file": "scenarios/areas/flood_biezanow.geojson",
+  "area_feature": "zone",
+  "url": "https://www.radiokrakow.pl/aktualnosci/krakow/burze-nad-malopolska-ul-biezanowska-zostala-podtopiona",
+  "reconstructed": true
+}

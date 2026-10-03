@@ -1,0 +1,36 @@
+{
+  "id": "ztp-flood-biezanow",
+  "source": "ZTP Kraków",
+  "kind": "official",
+  "category": "transit",
+  "title": "Utrudnienia: tramwaje 3, 9, 13, 49, 69 nie dojeżdżają do pętli Nowy Bieżanów P+R",
+  "title_en": "Disruption: trams 3, 9, 13, 49, 69 not reaching the Nowy Bieżanów P+R loop",
+  "summary": "Access to the Nowy Bieżanów P+R tram loop is flooded. Tram lines 3, 9, 13, 49, 69 are shortened to Prokocim. Expect delays on bus lines using Bieżanowska (153, 163, 195, 234, 284, 669).",
+  "summary_pl": "Zalany wjazd na pętlę Nowy Bieżanów P+R. Linie tramwajowe 3, 9, 13, 49, 69 skrócone do Prokocimia. Możliwe opóźnienia autobusów na ul. Bieżanowskiej (153, 163, 195, 234, 284, 669).",
+  "text_pl": "ZTP Kraków: z powodu podtopienia wjazdu na pętlę Nowy Bieżanów P+R tramwaje linii 3, 9, 13, 49, 69 kursują skróconą trasą do Prokocimia. Autobusy linii 153, 163, 195, 234, 284, 669 mogą kursować z opóźnieniami w rejonie ul. Bieżanowskiej.",
+  "affected_lines": [
+    "3",
+    "9",
+    "13",
+    "49",
+    "69",
+    "153",
+    "163",
+    "195",
+    "234",
+    "284",
+    "669"
+  ],
+  "affected_stops": [
+    "Bieżanów Pomnik",
+    "Bieżanów Szkoła",
+    "Duża Góra",
+    "Nowy Bieżanów P+R",
+    "Ćwiklińskiej"
+  ],
+  "area_file": "scenarios/areas/flood_biezanow.geojson",
+  "area_feature": "zone",
+  "url": "https://www.radiokrakow.pl/aktualnosci/krakow/burze-nad-malopolska-ul-biezanowska-zostala-podtopiona",
+  "reconstructed": true,
+  "note": "Real event reported: Bieżanowska flooded, tram loop entrance flooded, trams shortened to Prokocim. The bus part of this notice is our assumption."
+}

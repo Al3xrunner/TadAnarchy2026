@@ -1,0 +1,17 @@
+{
+  "id": "news-heating-azory",
+  "source": "Radio Kraków",
+  "kind": "news",
+  "category": "heating",
+  "title": "Zimne kaloryfery w trzech dzielnicach. Awaria magistrali na Azorach",
+  "title_en": "Cold radiators in three districts after a heating-main failure in Azory",
+  "summary": "A leak in the heating main near Radzikowskiego left several thousand residents, plus nurseries, kindergartens and schools, without heating. Crews first have to pump the flooded chamber dry.",
+  "summary_pl": "Rozszczelnienie magistrali przy Radzikowskiego pozbawiło ogrzewania kilka tysięcy mieszkańców oraz żłobki, przedszkola i szkoły. Ekipy muszą najpierw wypompować zalaną komorę.",
+  "cause": "Leak in the heating main near Radzikowskiego/Stachiewicza (MPEC)",
+  "cause_pl": "Rozszczelnienie magistrali ciepłowniczej przy Radzikowskiego/Stachiewicza (MPEC)",
+  "area_file": "scenarios/areas/heating_azory.geojson",
+  "area_feature": "zone",
+  "url": "https://www.radiokrakow.pl/aktualnosci/krakow/pilne-awaria-sieci-cieplowniczej-w-krakowie/",
+  "reconstructed": true,
+  "facilities_mentioned": "Publiczne Przedszkole \"Mali Przyjaciele\", Żłobek Śpioszek, Szkoła Podstawowa nr 113 im. Leopolda Węgrzynowicza, Samorządowe Przedszkole nr 118, Samorządowe Przedszkole nr 121 z Oddziałami Integracyjnymi, Żłobek Samorządowy nr 25, Szkoła Podstawowa Źródło, Bajeczka, Przedszkole Źródło, Szkoła Podstawowa Wierchy, Kolorowe Przedszkole, Wesoły Zakątek, Żłobek \"Zabawa\""
+}

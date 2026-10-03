@@ -1,0 +1,12 @@
+
+id: official_layer_example
+title: "EXAMPLE – planned power outage (fictional), official-only layer"
+based_on_real_event: false
+start_clock: "07:30"
+seed: 1
+recommended_users: 20000
+background:
+  reports_per_user_per_day: 0.02
+incidents: []
+events:
+  - {at_min: 0, type: notice_add, file: scenarios/notices/tauron_power_planned_EXAMPLE.json}

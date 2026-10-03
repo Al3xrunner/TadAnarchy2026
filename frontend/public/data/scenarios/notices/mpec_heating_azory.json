@@ -1,0 +1,150 @@
+{
+  "id": "mpec-heating-azory",
+  "source": "MPEC",
+  "kind": "official",
+  "category": "heating",
+  "title": "Awaria magistrali ciepłowniczej – Azory, Bronowice, Prądnik Biały",
+  "title_en": "Heating main failure – Azory, Bronowice, Prądnik Biały",
+  "summary": "Leak on a heating main at Radzikowskiego/Stachiewicza. Blocks in Azory, Bronowice and Prądnik Biały have no heating and no hot water. Repair time not yet known.",
+  "summary_pl": "Rozszczelnienie magistrali przy Radzikowskiego/Stachiewicza. Budynki na Azorach, w Bronowicach i na Prądniku Białym bez ogrzewania i ciepłej wody. Czas naprawy nieznany.",
+  "text_pl": "MPEC S.A. informuje o awarii magistrali ciepłowniczej w rejonie skrzyżowania ulic Radzikowskiego i Stachiewicza. Bez dostaw ciepła i ciepłej wody pozostają budynki przy ulicach: Berwińskiego, Chełmońskiego, Czeladniczej, Elsnera, Gdyńskiej, Głowackiego, Halczyna, Lentza, Makowskiego, Modrzejewskiej, Murarskiej, Niskiej, Pod Fortem, Radzikowskiego, Stachiewicza, Stanisławskiego, Weissa, Wielkotyrnowskiej, Wybickiego. Służby wypompowują wodę z komory ciepłowniczej; dopiero potem możliwa będzie ocena uszkodzenia i czasu naprawy. Pogotowie ciepłownicze: 993.",
+  "streets": [
+    "Bartosza Głowackiego",
+    "Czeladnicza",
+    "Gdyńska",
+    "Heleny Modrzejewskiej",
+    "Jana Stanisławskiego",
+    "Józefa Chełmońskiego",
+    "Józefa Chełmońskiego-Deptak",
+    "Józefa Elsnera",
+    "Józefa Wybickiego",
+    "Murarska",
+    "Niska",
+    "Piotra Stachiewicza",
+    "Pod Fortem",
+    "Ryszarda Berwińskiego",
+    "Stanisława Lentza",
+    "Tadeusza Makowskiego",
+    "Walerego Eliasza Radzikowskiego",
+    "Wielkotyrnowska",
+    "Wojciecha Halczyna",
+    "Wojciecha Weissa"
+  ],
+  "affected_facilities": [
+    {
+      "name": "Przychodnia Azory",
+      "type": "clinic",
+      "address": "Wacława Nałkowskiego 1"
+    },
+    {
+      "name": "Publiczne Przedszkole \"Mali Przyjaciele\"",
+      "type": "kindergarten",
+      "address": "Józefa Chełmońskiego 35"
+    },
+    {
+      "name": "Żłobek Śpioszek",
+      "type": "nursery",
+      "address": "Piotra Stachiewicza 32"
+    },
+    {
+      "name": "Szkoła Podstawowa nr 113 im. Leopolda Węgrzynowicza",
+      "type": "primary_school",
+      "address": "Piotra Stachiewicza"
+    },
+    {
+      "name": "Samorządowe Przedszkole nr 118",
+      "type": "kindergarten",
+      "address": ""
+    },
+    {
+      "name": "XIV Liceum Ogólnokształcące im. Mikołaja Kopernika",
+      "type": "secondary_school",
+      "address": ""
+    },
+    {
+      "name": "Samorządowe Przedszkole nr 121 z Oddziałami Integracyjnymi",
+      "type": "kindergarten",
+      "address": "Piotra Stachiewicza 21"
+    },
+    {
+      "name": "Żłobek Samorządowy nr 25",
+      "type": "nursery",
+      "address": "Gustawa Ehrenberga 3"
+    },
+    {
+      "name": "Klinika Krakowska",
+      "type": "clinic",
+      "address": "Józefa Mehoffera 6"
+    },
+    {
+      "name": "Szkoła Podstawowa Źródło",
+      "type": "primary_school",
+      "address": ""
+    },
+    {
+      "name": "Bajeczka",
+      "type": "kindergarten",
+      "address": ""
+    },
+    {
+      "name": "Przedszkole Źródło",
+      "type": "kindergarten",
+      "address": ""
+    },
+    {
+      "name": "Szkoła Podstawowa Wierchy",
+      "type": "primary_school",
+      "address": ""
+    },
+    {
+      "name": "Kolorowe Przedszkole",
+      "type": "kindergarten",
+      "address": ""
+    },
+    {
+      "name": "Wesoły Zakątek",
+      "type": "kindergarten",
+      "address": ""
+    },
+    {
+      "name": "Żłobek \"Zabawa\"",
+      "type": "nursery",
+      "address": ""
+    },
+    {
+      "name": "AWP Klinika Dermatologii",
+      "type": "clinic",
+      "address": ""
+    },
+    {
+      "name": "Centrum Medyczne \"Pod Fortem\"",
+      "type": "clinic",
+      "address": ""
+    },
+    {
+      "name": "Małopolskie Centrum Zdrowia",
+      "type": "clinic",
+      "address": "Wojciecha Weissa 7"
+    },
+    {
+      "name": "school other",
+      "type": "school_other",
+      "address": ""
+    },
+    {
+      "name": "clinic",
+      "type": "clinic",
+      "address": ""
+    }
+  ],
+  "emergency_phone": "993",
+  "area_file": "scenarios/areas/heating_azory.geojson",
+  "area_feature": "zone",
+  "url": "https://www.radiokrakow.pl/aktualnosci/krakow/pilne-awaria-sieci-cieplowniczej-w-krakowie/",
+  "reconstructed": true,
+  "based_on": [
+    "https://www.radiokrakow.pl/aktualnosci/krakow/pilne-awaria-sieci-cieplowniczej-w-krakowie/",
+    "https://www.radiokrakow.pl/aktualnosci/krakow/krakow-wielka-usterka-rurociagu-naprawiona-ale-pojawila-sie-kolejna-na-ruczaju"
+  ],
+  "note": "Real event (failure at Radzikowskiego/Stachiewicza affecting Azory, Bronowice, Prądnik Biały). The exact 57-street list was not available, so the street list is our reconstruction of the area."
+}

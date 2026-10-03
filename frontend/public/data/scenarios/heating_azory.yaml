@@ -1,0 +1,27 @@
+
+
+id: heating_azory
+title: "Heating-main failure – Azory / Bronowice / Prądnik Biały (MPEC)"
+based_on_real_event: true
+start_clock: "06:10"
+seed: 42
+recommended_users: 20000        
+background:
+  reports_per_user_per_day: 0.02
+incidents:
+  - id: heat
+    category: heating
+    mode: residents
+    area: {file: scenarios/areas/heating_azory.geojson, feature: zone}
+    start_min: 20                 
+    end_min: 1440
+    p_report: 0.35
+    delay: {median_min: 25, sigma: 0.8}
+    wrong_category: {category: water, prob: 0.10}   
+events:
+  - {at_min: 65, type: notice_add, file: scenarios/notices/mpec_heating_azory.json}
+  - {at_min: 80, type: notice_add, file: scenarios/notices/news_heating_azory.json}
+expected:                        
+  residents_in_area: 5142          
+  app_users_in_area_at_20k: ~127
+  vulnerable_facilities_in_area: 21   

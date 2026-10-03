@@ -3,17 +3,11 @@ import os
 from flask import Flask, send_from_directory
 
 from config import Config
-from flask_cors import CORS 
-from config import Config
-from engine.models import db 
 
 
 def create_app(start_engine=True):
     app = Flask(__name__)
     app.config.from_object(Config)
-
-    CORS(app)
-    db.init_app(app)
 
     from db.session import init_db
     from db.writer import DBWriter
@@ -32,7 +26,7 @@ def create_app(start_engine=True):
             engine = Engine(app.config["DATA_DIR"], app.config["EXTRA_SCENARIOS"])
             engine.clock.speed = app.config["DEFAULT_SPEED"]
             engine.handle("load", {"scenario": app.config["DEFAULT_SCENARIO"], "users": app.config["DEFAULT_USERS"],
-                                   "seed": 67})
+                                   "seed": 42})
             runner = EngineRunner(engine, db_queue=writer.queue)
         runner.start()
         app.extensions["runner"] = runner
@@ -44,11 +38,13 @@ def create_app(start_engine=True):
     from db.load import register_cli
     register_cli(app)
 
+    # Optional: serve the built frontend (npm run build) from the same port, e.g. for the demo laptop
     dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
     @app.get("/")
     @app.get("/app")
-    
+    @app.get("/dashboard")
+    @app.get("/director")
     def spa():
         return send_from_directory(dist, "index.html")
 
@@ -64,5 +60,6 @@ def create_app(start_engine=True):
 
 
 if __name__ == "__main__":
+    # use_reloader=False: the reloader imports the app twice = two engine threads
     create_app().run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), threaded=True,
                      debug=True, use_reloader=False)

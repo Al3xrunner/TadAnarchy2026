@@ -1,12 +1,16 @@
 from datetime import datetime, timezone
+
 from sqlalchemy import JSON, BigInteger, DateTime, ForeignKey, Index, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+
 
 def utcnow():
     return datetime.now(timezone.utc)
 
+
 class Base(DeclarativeBase):
     pass
+
 
 class Run(Base):
     __tablename__ = "runs"
@@ -16,6 +20,7 @@ class Run(Base):
     users: Mapped[int]
     seed: Mapped[int]
     started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
 
 class ReportRow(Base):
     __tablename__ = "reports"
@@ -32,6 +37,7 @@ class ReportRow(Base):
     text: Mapped[str | None] = mapped_column(String(280))
     __table_args__ = (Index("ix_reports_run_t", "run_id", "t"), Index("ix_reports_cell_cat", "cell8", "category"))
 
+
 class IncidentRow(Base):
     __tablename__ = "incidents"
     run_id: Mapped[int] = mapped_column(BigInteger, ForeignKey("runs.id"), primary_key=True)
@@ -46,6 +52,7 @@ class IncidentRow(Base):
     data: Mapped[dict] = mapped_column(JSON)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, onupdate=utcnow)
 
+
 class Address(Base):
     __tablename__ = "addresses"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -56,6 +63,7 @@ class Address(Base):
     lat: Mapped[float]
     lng: Mapped[float]
     cell10: Mapped[str] = mapped_column(String(16))
+
 
 class Facility(Base):
     __tablename__ = "facilities"
@@ -68,16 +76,3 @@ class Facility(Base):
     cell11: Mapped[str] = mapped_column(String(16))
     lat: Mapped[float]
     lng: Mapped[float]
-
-class ResolvedIssue(Base):
-    __tablename__ = "resolved_landscape_issues"
-    
-    issue_id: Mapped[str] = mapped_column(String(50), primary_key=True)
-    title: Mapped[str] = mapped_column(String(150))
-    category: Mapped[str] = mapped_column(String(50))
-
-    description: Mapped[str | None] = mapped_column(String(4000))
-    resolution_notes: Mapped[str | None] = mapped_column(String(4000))
-    
-    created_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
-    resolved_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)

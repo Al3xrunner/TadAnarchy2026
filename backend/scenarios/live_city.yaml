@@ -1,0 +1,17 @@
+id: live_city
+title: "Live city – random incidents all day"
+start_clock: "06:00"
+seed: 7
+recommended_users: 20000
+background: {reports_per_user_per_day: 0.02}
+incidents: []
+events: []
+random_incidents:
+  water:   {per_day: 6,   rings: [0, 2], hours: [1, 6],   p_report: 0.5,  delay: {median_min: 12, sigma: 0.7},
+            notice: {prob: 0.7, after_min: [20, 60], source: "Wodociągi Miasta Krakowa"}}
+  power:   {per_day: 3,   rings: [0, 2], hours: [0.5, 4], p_report: 0.45, delay: {median_min: 8, sigma: 0.6},
+            notice: {prob: 0.5, after_min: [15, 45], source: "Tauron Dystrybucja"}}
+  heating: {per_day: 2,   rings: [1, 3], hours: [3, 24],  p_report: 0.35, delay: {median_min: 30, sigma: 0.8},
+            notice: {prob: 0.8, after_min: [30, 90], source: "MPEC"}}
+  flood:   {per_day: 0.3, rings: [0, 1], hours: [0.5, 2], p_report: 0.3,  delay: {median_min: 5, sigma: 0.5},
+            notice: {prob: 0.2, after_min: [20, 40], source: "Państwowa Straż Pożarna"}}
