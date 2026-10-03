@@ -5,6 +5,9 @@ shapely>=2.0
 pyproj>=3.6
 numpy>=1.26
 pyyaml>=6.0
+pyodbc
+Flask-SQLAlchemy
+flask-cors
 # tests only
 pytest
 requests

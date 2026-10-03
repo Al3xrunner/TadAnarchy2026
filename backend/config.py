@@ -1,4 +1,5 @@
 import os
+import urllib.parse
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,3 +13,17 @@ class Config:
     DEFAULT_SCENARIO = os.environ.get("SCENARIO", "live_city").strip()
     DEFAULT_USERS = int(os.environ.get("USERS", "20000"))
     DEFAULT_SPEED = float(os.environ.get("SPEED", "60"))
+
+    odbc_str = (
+        "DRIVER={ODBC Driver 18 for SQL Server};"
+        "SERVER=127.0.0.1,1433;"
+        "DATABASE=master;"
+        "UID=sa;"
+        "PWD=YourStrongPassword123!;"
+        "TrustServerCertificate=yes;"
+    )
+    
+    params = urllib.parse.quote_plus(odbc_str)
+    
+    SQLALCHEMY_DATABASE_URI = f"mssql+pyodbc:///?odbc_connect={params}"
+    SQLALCHEMY_TRACK_MODIFICATIONS = False

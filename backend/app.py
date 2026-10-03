@@ -3,11 +3,17 @@ import os
 from flask import Flask, send_from_directory
 
 from config import Config
+from flask_cors import CORS 
+from config import Config
+from engine.models import db 
 
 
 def create_app(start_engine=True):
     app = Flask(__name__)
     app.config.from_object(Config)
+
+    CORS(app)
+    db.init_app(app)
 
     from db.session import init_db
     from db.writer import DBWriter
