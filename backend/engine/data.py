@@ -12,8 +12,6 @@ class DataPack:
 
     def __init__(self, root, extra_scenarios=None):
         self.root = Path(root)
-        if not (self.root / "cells_res8.json").exists():
-            raise FileNotFoundError(f"data pack not found in {self.root} (unzip it into frontend/public/data)")
         self.scenario_dirs = [self.root / "scenarios"] + ([Path(extra_scenarios)] if extra_scenarios else [])
         self.cells8 = self.json("cells_res8.json")["cells"]      
         self.pop11 = self.json("cells_res11.json")["cells"]      
