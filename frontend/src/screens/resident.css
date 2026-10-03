@@ -1,0 +1,53 @@
+/* Resident app styles. Everything is scoped under .phone so it doesn't touch the rest of your app. */
+.phone { --ink: #1d2a36; --muted: #5b6b7a; --line: #d9e1e8; --accent: #1f4e79;
+         max-width: 430px; height: 100dvh; margin: 0 auto; display: flex; flex-direction: column; position: relative;
+         background: #fff; color: var(--ink); font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+         box-shadow: 0 0 24px rgba(0,0,0,.12); box-sizing: border-box; }
+.phone *, .phone *::before, .phone *::after { box-sizing: border-box; }
+.phone.center { display: grid; place-items: center; }
+.phone button { font: inherit; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: .55rem .8rem; cursor: pointer; color: var(--ink); }
+.phone button.primary { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
+.phone button.wide { width: 100%; margin-top: .5rem; }
+.phone button.link { border: 0; padding: 0; color: var(--accent); text-decoration: underline; background: none; }
+.phone input { font: inherit; padding: .5rem .6rem; border: 1px solid var(--line); border-radius: 8px; width: 100%; }
+.phone .muted { color: var(--muted); font-size: .9rem; }
+.phone .warn { color: #b3261e; font-weight: 600; }
+.phone .ok { color: #2e7d32; font-weight: 600; }
+.phone .note { color: #7a5200; }
+.phone .row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.phone header { display: flex; gap: .6rem; padding: .7rem .9rem; align-items: center; border-bottom: 1px solid var(--line); }
+.phone header .clock { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--muted); }
+.phone .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; background: #e0a030; }
+.phone .dot.live { background: #2e7d32; }
+.phone .dot.lost { background: #b3261e; }
+.phone .chip { font-size: .78rem; padding: .1rem .5rem; border-radius: 999px; background: #eef2f5; margin-right: .3rem; white-space: nowrap; }
+.phone .chip.official { background: #dbe8f5; color: #1f4e79; }
+.phone .chip.residents { background: #fde2e4; color: #8e1b2b; }
+.phone .chip.possible { background: #fff3d6; color: #7a5200; }
+.phone .map-wrap { flex: 1; position: relative; }            /* the map needs a height: flex gives it one */
+.phone .crosshair { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px;
+                    border: 3px solid var(--ink); border-radius: 50%; pointer-events: none; z-index: 500;
+                    box-shadow: 0 0 0 3px rgba(255,255,255,.8); }
+.phone .toast { position: absolute; left: .6rem; right: .6rem; bottom: .6rem; z-index: 500; background: #fff; border-radius: 10px;
+                padding: .5rem .7rem; box-shadow: 0 2px 10px rgba(0,0,0,.15); font-size: .9rem; }
+.phone .banner { border: 0; border-radius: 0; background: #fde2e4; text-align: left; padding: .6rem .9rem; }
+.phone .bottom { padding: .7rem .9rem; border-top: 1px solid var(--line); background: #fff; }
+/* sheets sit above Leaflet's panes (400) and below its controls (1000) */
+.phone .sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 600; background: #fff; border-radius: 16px 16px 0 0;
+                padding: 1rem 1rem 1.2rem; box-shadow: 0 -4px 18px rgba(0,0,0,.18); max-height: 70%; overflow: auto; }
+.phone .sheet h2 { margin: 0 0 .4rem; font-size: 1.15rem; padding-right: 2rem; }
+.phone .sheet p { margin: .45rem 0; }
+.phone .sheet .close { position: absolute; right: .7rem; top: .6rem; border: 0; font-size: 1.4rem; background: none; }
+.phone .sheet .big { font-size: 1.1rem; }
+.phone .sheet.danger h2 { color: #b3261e; }
+.phone .call { display: block; text-align: center; padding: .8rem; margin: .4rem 0; border-radius: 10px; background: #b3261e;
+               color: #fff; font-weight: 700; text-decoration: none; }
+.phone .grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.phone .grid button { border: 2px solid; display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; }
+.phone .grid small { color: var(--muted); }
+.phone .official { background: #eef4fb; border-radius: 8px; padding: .4rem .6rem; }
+.phone .home { margin: 0 0 .5rem; }
+.phone .search { position: relative; margin-bottom: .5rem; }
+.phone .hits { position: absolute; bottom: 100%; left: 0; right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px;
+               z-index: 700; box-shadow: 0 -4px 14px rgba(0,0,0,.12); }
+.phone .hits button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
