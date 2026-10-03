@@ -38,10 +38,11 @@ def create_app(start_engine=True):
     from db.load import register_cli
     register_cli(app)
 
+    dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
     @app.get("/")
     @app.get("/app")
-
+    
     def spa():
         return send_from_directory(dist, "index.html")
 
