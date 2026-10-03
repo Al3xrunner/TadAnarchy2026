@@ -1,0 +1,10 @@
+flask>=3.0
+sqlalchemy>=2.0
+h3>=4.1
+shapely>=2.0
+pyproj>=3.6
+numpy>=1.26
+pyyaml>=6.0
+# tests only
+pytest
+requests
