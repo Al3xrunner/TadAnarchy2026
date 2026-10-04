@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 backend/city.db*
 backend/forum_comments.json*
+backend/transit_cache/

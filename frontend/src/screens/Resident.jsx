@@ -6,8 +6,11 @@ import MapView from '../maps/MapView'
 import HexLayer from '../maps/HexLayer'
 import BuildingTiles from '../maps/BuildingTiles'
 import IncidentLayer from '../maps/IncidentLayer'
+import LineIncidentLayer from '../maps/LineIncidentLayer'
 import { DETAIL_ZOOM } from '../maps/useZoom'
 import IncidentSheet from './IncidentSheet'
+import LineIncidentSheet from './LineIncidentSheet'
+import TransitReport from './TransitReport'
 import AddressSearch from './AddressSearch'
 import { useLocalStorage } from './useLocalStorage'
 import { useCommunityIdentity } from './useCommunityIdentity'
@@ -16,14 +19,15 @@ import './resident.css'
 const REASONS = {
   duplicate: 'You already reported this here.', rate_limited: 'Slow down – too many reports.',
   outside_city: 'Only inside Kraków.', engine_busy: 'Server busy, try again.', network: 'No connection.',
+  line_required: 'Choose a line.',
 }
 
-/** The resident app (phone): live map, report flow, incident details, "is it my building?". Route: /app */
 export default function Resident() {
   const { snap, status } = useSnapshot()
   const [map, setMap] = useState(null)
   const [selectedId, setSelectedId] = useState(null)
-  const [mode, setMode] = useState('browse')          // browse | pick | danger | done
+  const [lineId, setLineId] = useState(null)
+  const [mode, setMode] = useState('browse')          
   const [message, setMessage] = useState('')
   const [home, setHome] = useLocalStorage('home', null)
   const communityUser = useCommunityIdentity(home)
@@ -45,36 +49,53 @@ export default function Resident() {
 
   if (!snap) return <div className="phone center">Łączenie… / Connecting…</div>
 
-  const selected = snap.incidents.find((i) => i.id === selectedId) ?? null   // select by id: updates live
+  const lineIncidents = snap.line_incidents ?? []
+  const selected = snap.incidents.find((i) => i.id === selectedId) ?? null   
+  const selectedLine = lineIncidents.find((i) => i.id === lineId) ?? null
   const related = selected ? snap.incidents.find((x) => x.id === selected.related_to) ?? null : null
+  const lineRelated = selectedLine ? snap.incidents.find((x) => x.id === selectedLine.related_to) ?? null : null
   const mine = home ? snap.incidents.find((i) => i.footprint_cells10.includes(home.cell10)) : undefined
+  const open = selected || selectedLine
 
-  async function send(category, kind = 'problem', at) {
+  async function send(category, kind = 'problem', at, extra = {}) {
     const where = at ?? map?.getCenter()
     if (!where) return
-    const r = await postReport({ category, kind, lat: where.lat, lng: where.lng })
+    const r = await postReport({ category, kind, lat: where.lat, lng: where.lng, ...extra })
+    const what = extra.line ? `line ${extra.line}` : CATEGORY[category].en
     setMessage(!r.accepted ? (REASONS[r.reason] ?? 'Could not send.')
       : kind === 'fine' ? 'Thanks – noted that it works for you.'
-      : `You and ${Math.max(0, (r.nearby_devices ?? 1) - 1)} others nearby report: ${CATEGORY[category].en}.`)
+      : `You and ${Math.max(0, (r.nearby_devices ?? 1) - 1)} others nearby report: ${what}.`)
     setMode('done')
   }
 
-  function focus(i) {
-    setSelectedId(i.id)
+  function flyTo(center, minZoom) {
     if (!map) return
-    // zoom in and keep the incident in the upper part of the screen, above the bottom sheet
-    const z = Math.max(map.getZoom(), DETAIL_ZOOM)
-    const target = map.unproject(map.project([i.center.lat, i.center.lng], z).add([0, map.getSize().y * 0.28]), z)
+    const z = Math.max(map.getZoom(), minZoom)
+    const target = map.unproject(map.project([center.lat, center.lng], z).add([0, map.getSize().y * 0.28]), z)
     map.flyTo(target, z, { duration: 0.8 })
   }
 
-  // "me too" counts at your home if it is inside the incident, otherwise at the incident's centre
+  function focus(i) {
+    setLineId(null)
+    setSelectedId(i.id)
+    flyTo(i.center, DETAIL_ZOOM)
+  }
+
+  function focusLine(i) {
+    setSelectedId(null)
+    setLineId(i.id)
+    flyTo(i.center, 13)
+  }
+
   const meTooAt = (i) => (home && i.footprint_cells10.includes(home.cell10) ? home : i.center)
+  const lineExtra = (i) => ({ line: i.line, stop_id: i.stops[0]?.stop_id })
+  const lineStop = (i) => i.stops[0] ?? i.center
 
   return (
     <div className="phone">
       <header>
         <b>Kraków Live</b>
+        <a className="muted" href="/transit">Komunikacja</a>
         <span className="clock">{snap.sim_clock}</span>
         <span className={`dot ${status}`} title={status} />
       </header>
@@ -96,9 +117,10 @@ export default function Resident() {
             }}
           />
           <BuildingTiles incidents={snap.incidents} onPick={setBuilding} />
+          <LineIncidentLayer incidents={lineIncidents} selectedId={lineId} onSelect={focusLine} />
           <IncidentLayer incidents={snap.incidents} notices={snap.notices} selectedId={selectedId} onSelect={focus} />
         </MapView>
-        {mode === 'pick' && <div className="crosshair" />}
+        {(mode === 'pick' || mode === 'transit') && <div className="crosshair" />}
         {homeToastKey && dismissedHomeToastKey !== homeToastKey && homeIncident && (
           <div className="address-toast" role="status" aria-live="polite">
             <span aria-hidden="true">!</span>
@@ -114,7 +136,7 @@ export default function Resident() {
             </button>
           </div>
         )}
-        {building && mode === 'browse' && !selected && (
+        {building && mode === 'browse' && !open && (
           <div className="toast" onClick={() => setBuilding(null)}>
             {building.address ?? 'Building'} · {building.type ?? ''}
             {building.residential ? ` · ~${building.residents_est} residents` : ''}
@@ -122,7 +144,7 @@ export default function Resident() {
         )}
       </div>
 
-      {mode === 'browse' && !selected && (
+      {mode === 'browse' && !open && (
         <div className="bottom">
           <AddressSearch home={home} onPick={setHome} />
           <button className="primary wide" onClick={() => { setMode('pick'); setBuilding(null) }}>Zgłoś problem · Report</button>
@@ -135,13 +157,18 @@ export default function Resident() {
           <div className="grid">
             {REPORTABLE.map((c) => (
               <button key={c} style={{ borderColor: CATEGORY[c].color }}
-                onClick={() => (c === 'danger' ? setMode('danger') : send(c))}>
+                onClick={() => (c === 'danger' ? setMode('danger') : c === 'transit' ? setMode('transit') : send(c))}>
                 <b>{CATEGORY[c].pl}</b><small>{CATEGORY[c].en}</small>
               </button>
             ))}
           </div>
           <button className="wide" onClick={() => setMode('browse')}>Anuluj · Cancel</button>
         </div>
+      )}
+
+      {mode === 'transit' && map && (
+        <TransitReport at={map.getCenter()} onCancel={() => setMode('browse')}
+          onSend={({ line, stop_id, lat, lng }) => send('transit', 'problem', { lat, lng }, { line, stop_id })} />
       )}
 
       {mode === 'danger' && (
@@ -167,6 +194,13 @@ export default function Resident() {
           onClose={() => setSelectedId(null)}
           onMeToo={() => send(selected.cat, 'problem', meTooAt(selected))}
           onFine={() => send(selected.cat, 'fine', meTooAt(selected))} />
+      )}
+
+      {selectedLine && mode === 'browse' && (
+        <LineIncidentSheet incident={selectedLine} simT={snap.sim_t} related={lineRelated}
+          onClose={() => setLineId(null)}
+          onMeToo={() => send('transit', 'problem', lineStop(selectedLine), lineExtra(selectedLine))}
+          onFine={() => send('transit', 'fine', lineStop(selectedLine), lineExtra(selectedLine))} />
       )}
     </div>
   )
