@@ -20,6 +20,7 @@ def stream():
                 continue
             last = version
             snapshot = json.loads(payload)
+            comment_store.keep_active_incidents(snapshot.get("incidents", []))
             snapshot["recent_comments"] = comment_store.recent()
             payload = json.dumps(snapshot, ensure_ascii=False, separators=(",", ":"))
             yield f"data: {payload}\n\n" 
@@ -33,5 +34,7 @@ def stream():
 def snapshot():
     _, payload = current_app.extensions["runner"].wait_for_snapshot(-1, timeout=0)
     snapshot = json.loads(payload)
-    snapshot["recent_comments"] = current_app.extensions["comment_store"].recent()
+    comment_store = current_app.extensions["comment_store"]
+    comment_store.keep_active_incidents(snapshot.get("incidents", []))
+    snapshot["recent_comments"] = comment_store.recent()
     return Response(json.dumps(snapshot, ensure_ascii=False), mimetype="application/json")

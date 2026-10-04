@@ -33,7 +33,9 @@ def create_app(start_engine=True):
 
     from api import comments, director, geo, history, reports, stream
     from api.comments import CommentStore
-    app.extensions["comment_store"] = CommentStore()
+    app.extensions["comment_store"] = CommentStore(
+        os.environ.get("COMMENTS_FILE", os.path.join(os.path.dirname(__file__), "forum_comments.json"))
+    )
     for module in (reports, stream, comments, director, geo, history):
         app.register_blueprint(module.bp)
 

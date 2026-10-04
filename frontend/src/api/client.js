@@ -25,7 +25,22 @@ export async function postComment({ incident_id, user, text }) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ incident_id, user, text }),
   })
-  const result = await response.json()
+  const contentType = response.headers.get('content-type') ?? ''
+  if (!contentType.includes('application/json')) {
+    if (response.status === 404 || contentType.includes('text/html')) {
+      throw new Error(
+        'The comment API is unavailable. Restart the Flask backend so it loads /api/comments, then try again.',
+      )
+    }
+    throw new Error(`The comment API returned an unexpected response (${response.status}).`)
+  }
+
+  let result
+  try {
+    result = await response.json()
+  } catch {
+    throw new Error('The comment API returned invalid JSON. Please try again.')
+  }
   if (!response.ok) {
     throw new Error(result.error ?? `Could not post update (${response.status}).`)
   }

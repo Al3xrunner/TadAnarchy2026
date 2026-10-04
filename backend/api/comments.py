@@ -1,20 +1,48 @@
 from datetime import datetime
 import json
+import os
+from pathlib import Path
 from threading import Lock
 
 from flask import Blueprint, current_app, jsonify, request
 
 bp = Blueprint("comments", __name__)
-MAX_COMMENTS = 200
 MAX_TEXT_LENGTH = 500
 MAX_USER_LENGTH = 60
 
 
 class CommentStore:
-    def __init__(self):
-        self._comments = []
-        self._next_id = 1
+    def __init__(self, path):
+        self._path = Path(path)
         self._lock = Lock()
+        self._comments = self._load()
+        self._next_id = max((comment["id"] for comment in self._comments), default=0) + 1
+
+    def _load(self):
+        if not self._path.exists():
+            return []
+        with self._path.open(encoding="utf-8") as comments_file:
+            comments = json.load(comments_file)
+        if not isinstance(comments, list) or any(
+            not isinstance(comment, dict)
+            or not isinstance(comment.get("id"), int)
+            or not isinstance(comment.get("incident_id"), str)
+            for comment in comments
+        ):
+            raise ValueError(f"Invalid comment data in {self._path}")
+        return comments
+
+    def _save(self, comments):
+        self._path.parent.mkdir(parents=True, exist_ok=True)
+        temporary_path = self._path.with_name(f"{self._path.name}.tmp")
+        try:
+            with temporary_path.open("w", encoding="utf-8") as comments_file:
+                json.dump(comments, comments_file, ensure_ascii=False, indent=2)
+                comments_file.write("\n")
+            os.replace(temporary_path, self._path)
+        finally:
+            if temporary_path.exists():
+                temporary_path.unlink()
 
     def add(self, incident_id, district, user, text):
         with self._lock:
@@ -26,10 +54,26 @@ class CommentStore:
                 "text": text,
                 "timestamp": datetime.now().strftime("%H:%M"),
             }
+            comments = [*self._comments, comment]
+            self._save(comments)
+            self._comments = comments
             self._next_id += 1
-            self._comments.append(comment)
-            del self._comments[:-MAX_COMMENTS]
             return dict(comment)
+
+    def keep_active_incidents(self, incidents):
+        active_ids = {
+            incident["id"]
+            for incident in incidents
+            if incident.get("status") == "active" and incident.get("level", 0) > 0
+        }
+        with self._lock:
+            comments = [
+                comment for comment in self._comments
+                if comment["incident_id"] in active_ids
+            ]
+            if len(comments) != len(self._comments):
+                self._save(comments)
+                self._comments = comments
 
     def recent(self):
         with self._lock:
@@ -61,11 +105,11 @@ def post_comment():
     runner = current_app.extensions["runner"]
     _, payload = runner.wait_for_snapshot(-1, timeout=0)
     incidents = json.loads(payload).get("incidents", [])
+    store = current_app.extensions["comment_store"]
+    store.keep_active_incidents(incidents)
     incident = next((item for item in incidents if item.get("id") == incident_id), None)
-    if incident is None:
-        return jsonify(error="Incident not found."), 404
+    if incident is None or incident.get("status") != "active" or incident.get("level", 0) == 0:
+        return jsonify(error="Incident is no longer active."), 404
 
-    comment = current_app.extensions["comment_store"].add(
-        incident_id, incident.get("district", ""), user, text
-    )
+    comment = store.add(incident_id, incident.get("district", ""), user, text)
     return jsonify(comment), 201
