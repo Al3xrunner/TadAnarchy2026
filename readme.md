@@ -8,7 +8,7 @@ https://scar-16-olek.tail516b3d.ts.net/app
 
 ## Overview
 
-The Krakow Real incidents simulator was created to help citizens of Krakow get information about the possible outages, floods, road works and other city disasters. Additionally, the forum option is implemented, allowing users to add details while the problem exists, incorporating the feeling of “Same thing for me!” to create the sense of community.
+The City Eye was created to help citizens of Krakow get information about the possible outages, floods, road works and other city disasters. Additionally, the forum option is implemented, allowing users to add details while the problem exists, incorporating the feeling of “Same thing for me!” to create the sense of community.
 
 ## Key features + demo
 - **Crisis view of the whole Krakow app with all existing issues**
