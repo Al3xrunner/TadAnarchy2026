@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { geocode } from '../api/client'
 
-/** "My address" search (database, 70k addresses). The picked address is used for "Is it my building?". */
 export default function AddressSearch({ home, onPick }) {
   const [q, setQ] = useState('')
   const [hits, setHits] = useState([])
 
   useEffect(() => {
     if (q.trim().length < 3) return
-    const t = setTimeout(() => { geocode(q).then(setHits) }, 300)     // wait until typing pauses
+    const t = setTimeout(() => { geocode(q).then(setHits) }, 300)  
     return () => clearTimeout(t)
   }, [q])
 

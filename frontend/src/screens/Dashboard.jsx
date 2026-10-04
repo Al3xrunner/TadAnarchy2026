@@ -9,7 +9,6 @@ import { DETAIL_ZOOM } from '../maps/useZoom'
 import IncidentSheet from './IncidentSheet'
 import './dashboard.css'
 
-/** The city's view (laptop). Only aggregates: hexagons with >= 3 reporters, every incident, affected facilities. Route: /dashboard */
 export default function Dashboard() {
   const { snap, status } = useSnapshot()
   const [filter, setFilter] = useState('all')
@@ -20,10 +19,10 @@ export default function Dashboard() {
 
   const list = snap.incidents
     .filter((i) => filter === 'all' || i.cat === filter)
-    .sort((a, b) => Number(!!a.related_to) - Number(!!b.related_to))      // related ones last
+    .sort((a, b) => Number(!!a.related_to) - Number(!!b.related_to))      
   const selected = snap.incidents.find((i) => i.id === selectedId) ?? null
   const related = selected ? snap.incidents.find((x) => x.id === selected.related_to) ?? null : null
-  const red = snap.incidents.filter((i) => i.level === 2 && !i.related_to)  // related ones are not double counted
+  const red = snap.incidents.filter((i) => i.level === 2 && !i.related_to)  
   const facilities = red.reduce((n, i) => n + i.facilities_total, 0)
   const residents = red.reduce((n, i) => n + i.residents_at_least, 0)
 

@@ -5,7 +5,6 @@ const FACILITY_PL = {
   school_other: 'szkoła', hospital: 'szpital', clinic: 'przychodnia', nursing_home: 'DPS',
 }
 
-/** Bottom sheet with everything about one incident. Pass the incident from the latest snapshot so it updates live. */
 export default function IncidentSheet({ incident: i, simT, home, related, docked, onClose, onMeToo, onFine }) {
   const cat = CATEGORY[i.cat]
   const minutes = Math.max(0, Math.round((simT - i.first_t) / 60))

@@ -3,7 +3,6 @@ import { director, getJson } from '../api/client'
 import { useSnapshot } from '../api/useSnapshot'
 import './director.css'
 
-/** Runs the demo: load scenarios, change users and speed, watch detection times. Hidden during the pitch. Route: /director */
 export default function Director() {
   const { snap } = useSnapshot()
   const [scenarios, setScenarios] = useState([])

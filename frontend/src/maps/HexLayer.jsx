@@ -5,18 +5,13 @@ import { staticJson } from '../api/client'
 import { LEVEL_COLOR } from '../api/categories'
 import { DETAIL_ZOOM, useZoom } from './useZoom'
 
-/**
- * The 532 res-8 hexagons. Created ONCE from cells_res8.geojson, then only restyled
- * when a new snapshot arrives (rebuilding them every second would make the map stutter).
- * props: cells = snap.cells, category = 'all' | 'heating' | ..., minDevices = hide cells with fewer reporters
- */
 export default function HexLayer({ cells, category = 'all', minDevices = 0 }) {
   const map = useMap()
   const zoom = useZoom()
   const byId = useRef(new Map())
   const [ready, setReady] = useState(false)
 
-  useEffect(() => {                                   // build once
+  useEffect(() => {                                 
     let layer = null
     let alive = true
     staticJson('cells_res8.geojson').then((gj) => {
@@ -29,7 +24,7 @@ export default function HexLayer({ cells, category = 'all', minDevices = 0 }) {
     return () => { alive = false; layer?.remove(); byId.current.clear() }
   }, [map])
 
-  useEffect(() => {                                   // restyle on every snapshot
+  useEffect(() => {                                  
     const worst = new Map()
     for (const c of cells) {
       if ((category === 'all' || c.cat === category) && c.devices >= minDevices) {

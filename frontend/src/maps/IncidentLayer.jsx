@@ -2,7 +2,6 @@ import { CircleMarker, GeoJSON, Tooltip } from 'react-leaflet'
 import { CATEGORY } from '../api/categories'
 import { DETAIL_ZOOM, useZoom } from './useZoom'
 
-/** Incident icons at every zoom; footprints and official notice outlines when zoomed in. */
 export default function IncidentLayer({ incidents, notices, selectedId, onSelect }) {
   const detail = useZoom() >= DETAIL_ZOOM
   return (
@@ -12,7 +11,6 @@ export default function IncidentLayer({ incidents, notices, selectedId, onSelect
           style={{ color: '#1f4e79', weight: detail ? 3 : 2, dashArray: detail ? undefined : '4 4', fill: false }} />
       ))}
       {detail && incidents.filter((i) => i.footprint).map((i) => (
-        // <GeoJSON> ignores new data after mounting: a new key forces a remount when the footprint changes
         <GeoJSON key={`${i.id}-${i.footprint_cells10.length}-${i.footprint_cells10[0]}`} data={i.footprint}
           style={{ color: CATEGORY[i.cat].color, weight: 2.5, dashArray: i.approximate ? '6 5' : undefined, fillOpacity: 0.06 }}
           eventHandlers={{ click: () => onSelect(i) }} />

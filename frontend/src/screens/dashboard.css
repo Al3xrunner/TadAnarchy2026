@@ -1,4 +1,3 @@
-/* Dashboard styles, scoped under .dashboard */
 .dashboard { --ink: #1d2a36; --muted: #5b6b7a; --line: #d9e1e8; --accent: #1f4e79;
              display: grid; grid-template-columns: 400px 1fr; height: 100dvh; color: var(--ink);
              font-family: system-ui, -apple-system, 'Segoe UI', sans-serif; }
@@ -28,7 +27,6 @@
 .dashboard .card.level1 { border-left-color: #e0a030; }
 .dashboard .card.sel { box-shadow: 0 0 0 2px var(--accent); }
 .dashboard .card.related { opacity: .7; border-left-style: dashed; }
-/* the incident details, docked in the sidebar (IncidentSheet with docked) */
 .dashboard .panel { position: relative; border: 1px solid var(--line); border-radius: 12px; padding: .8rem; margin: .6rem 0; background: #fbfcfd; }
 .dashboard .panel h2 { margin: 0 0 .4rem; font-size: 1.1rem; padding-right: 2rem; }
 .dashboard .panel p { margin: .45rem 0; }

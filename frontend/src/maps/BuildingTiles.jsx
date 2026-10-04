@@ -11,20 +11,15 @@ function styleFor(p, colors) {
   return { color: '#8a97a5', weight: 0.4, fillColor: p.residential ? '#aab5c0' : '#dde2e7', fillOpacity: 0.7 }
 }
 
-/**
- * Building footprints, one file per res-8 hexagon (data/buildings/<cell>.geojson),
- * loaded only at zoom >= 15 and only for the visible area. Buildings inside an incident
- * footprint are coloured with the incident's colour. onPick(properties) on click.
- */
 export default function BuildingTiles({ incidents, onPick }) {
   const map = useMap()
   const group = useRef(L.layerGroup())
-  const tiles = useRef(new Map())        // cell -> L.GeoJSON | 'loading'
-  const colors = useRef(new Map())       // res-10 cell -> colour
+  const tiles = useRef(new Map())        
+  const colors = useRef(new Map())       
   const pick = useRef(onPick)
-  pick.current = onPick                  // Leaflet handlers always call the latest callback
+  pick.current = onPick                  
 
-  useEffect(() => {                      // recolour when footprints change
+  useEffect(() => {                      
     const m = new Map()
     for (const i of incidents) for (const c of i.footprint_cells10) m.set(c, CATEGORY[i.cat].color)
     const changed = m.size !== colors.current.size || [...m].some(([k, v]) => colors.current.get(k) !== v)
@@ -54,12 +49,12 @@ export default function BuildingTiles({ incidents, onPick }) {
           tiles.current.set(cell, layer)
           g.addLayer(layer)
         } catch {
-          tiles.current.delete(cell)     // retry on the next move
+          tiles.current.delete(cell)     
         }
       }
     }
     update()
-    map.on('moveend', update)            // fires after pans and zooms
+    map.on('moveend', update)            
     return () => { alive = false; map.off('moveend', update); g.remove() }
   }, [map])
 

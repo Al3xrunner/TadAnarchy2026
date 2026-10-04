@@ -7,5 +7,5 @@ export const CATEGORY = {
   danger: { pl: 'Zagrożenie', en: 'Danger', color: '#b3261e', phone: '112', phoneLabel: 'numer alarmowy' },
   other: { pl: 'Inne', en: 'Other', color: '#5c6b7a' },
 }
-export const LEVEL_COLOR = ['transparent', '#e0a030', '#d1495b']     // index = level 0 / 1 / 2
+export const LEVEL_COLOR = ['transparent', '#e0a030', '#d1495b']     
 export const REPORTABLE = ['heating', 'water', 'power', 'flood', 'transit', 'danger']

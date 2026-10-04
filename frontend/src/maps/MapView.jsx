@@ -1,7 +1,6 @@
-import 'leaflet/dist/leaflet.css'           // without this the map renders as scattered tiles
+import 'leaflet/dist/leaflet.css'           
 import { MapContainer, TileLayer } from 'react-leaflet'
 
-/** Base map centred on Kraków. Put layers inside as children. onReady(map) gives you the Leaflet map. */
 export default function MapView({ children, onReady, zoom = 12 }) {
   return (
     <MapContainer center={[50.0614, 19.9366]} zoom={zoom} preferCanvas zoomSnap={0.5}
