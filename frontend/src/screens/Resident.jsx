@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSnapshot } from '../api/useSnapshot'
 import { postReport } from '../api/client'
 import { CATEGORY, REPORTABLE } from '../api/categories'
@@ -17,14 +17,29 @@ const REASONS = {
   outside_city: 'Only inside Kraków.', engine_busy: 'Server busy, try again.', network: 'No connection.',
 }
 
+/** The resident app (phone): live map, report flow, incident details, "is it my building?". Route: /app */
 export default function Resident() {
   const { snap, status } = useSnapshot()
   const [map, setMap] = useState(null)
   const [selectedId, setSelectedId] = useState(null)
-  const [mode, setMode] = useState('browse')          
+  const [mode, setMode] = useState('browse')          // browse | pick | danger | done
   const [message, setMessage] = useState('')
   const [home, setHome] = useLocalStorage('home', null)
   const [building, setBuilding] = useState(null)
+  const [dismissedHomeToastKey, setDismissedHomeToastKey] = useState(null)
+  const homeIncident = snap && home
+    ? snap.incidents.find((i) => i.level >= 2 && i.footprint_cells10.includes(home.cell10)) ?? null
+    : null
+  const homeToastKey = homeIncident ? `${home?.cell10}:${homeIncident.id}` : null
+
+  useEffect(() => {
+    if (!homeToastKey) {
+      return
+    }
+
+    const timeout = window.setTimeout(() => setDismissedHomeToastKey(homeToastKey), 6000)
+    return () => window.clearTimeout(timeout)
+  }, [homeToastKey])
 
   if (!snap) return <div className="phone center">Łączenie… / Connecting…</div>
 
@@ -45,11 +60,13 @@ export default function Resident() {
   function focus(i) {
     setSelectedId(i.id)
     if (!map) return
+    // zoom in and keep the incident in the upper part of the screen, above the bottom sheet
     const z = Math.max(map.getZoom(), DETAIL_ZOOM)
     const target = map.unproject(map.project([i.center.lat, i.center.lng], z).add([0, map.getSize().y * 0.28]), z)
     map.flyTo(target, z, { duration: 0.8 })
   }
 
+  // "me too" counts at your home if it is inside the incident, otherwise at the incident's centre
   const meTooAt = (i) => (home && i.footprint_cells10.includes(home.cell10) ? home : i.center)
 
   return (
@@ -73,6 +90,21 @@ export default function Resident() {
           <IncidentLayer incidents={snap.incidents} notices={snap.notices} selectedId={selectedId} onSelect={focus} />
         </MapView>
         {mode === 'pick' && <div className="crosshair" />}
+        {homeToastKey && dismissedHomeToastKey !== homeToastKey && homeIncident && (
+          <div className="address-toast" role="status" aria-live="polite">
+            <span aria-hidden="true">!</span>
+            <span className="copy">
+              <b>Red alert near your address</b>
+              <br />{CATEGORY[homeIncident.cat].en} · {home.label}
+            </span>
+            <button
+              aria-label="Dismiss address alert"
+              onClick={() => setDismissedHomeToastKey(homeToastKey)}
+            >
+              ×
+            </button>
+          </div>
+        )}
         {building && mode === 'browse' && !selected && (
           <div className="toast" onClick={() => setBuilding(null)}>
             {building.address ?? 'Building'} · {building.type ?? ''}
