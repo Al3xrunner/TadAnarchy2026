@@ -23,7 +23,7 @@
 .phone .chip.official { background: #dbe8f5; color: #1f4e79; }
 .phone .chip.residents { background: #fde2e4; color: #8e1b2b; }
 .phone .chip.possible { background: #fff3d6; color: #7a5200; }
-.phone .map-wrap { flex: 1; position: relative; }            /* the map needs a height: flex gives it one */
+.phone .map-wrap { flex: 1; position: relative; }            
 .phone .crosshair { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px 0 0 -15px;
                     border: 3px solid var(--ink); border-radius: 50%; pointer-events: none; z-index: 500;
                     box-shadow: 0 0 0 3px rgba(255,255,255,.8); }
@@ -70,3 +70,4 @@
 .phone .lines button { min-width: 3rem; font-weight: 700; }
 .phone .line-badge { display: inline-block; min-width: 2rem; text-align: center; color: #fff; font-weight: 700; border-radius: 6px;
                      padding: .05rem .4rem; margin-right: .4rem; }
+.phone .crosshair { top: 25%; }

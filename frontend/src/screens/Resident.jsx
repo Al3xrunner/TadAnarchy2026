@@ -56,9 +56,10 @@ export default function Resident() {
   const lineRelated = selectedLine ? snap.incidents.find((x) => x.id === selectedLine.related_to) ?? null : null
   const mine = home ? snap.incidents.find((i) => i.footprint_cells10.includes(home.cell10)) : undefined
   const open = selected || selectedLine
+  const pickPoint = () => { const s = map.getSize(); return map.containerPointToLatLng([s.x / 2, s.y * 0.25]) }
 
   async function send(category, kind = 'problem', at, extra = {}) {
-    const where = at ?? map?.getCenter()
+    const where = at ?? (map ? pickPoint() : null)
     if (!where) return
     const r = await postReport({ category, kind, lat: where.lat, lng: where.lng, ...extra })
     const what = extra.line ? `line ${extra.line}` : CATEGORY[category].en
@@ -167,7 +168,7 @@ export default function Resident() {
       )}
 
       {mode === 'transit' && map && (
-        <TransitReport at={map.getCenter()} onCancel={() => setMode('browse')}
+        <TransitReport at={pickPoint()} onCancel={() => setMode('browse')}
           onSend={({ line, stop_id, lat, lng }) => send('transit', 'problem', { lat, lng }, { line, stop_id })} />
       )}
 
