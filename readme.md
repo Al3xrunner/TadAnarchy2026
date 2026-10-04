@@ -12,9 +12,12 @@ The Krakow Real incidents simulator was created to help citizens of Krakow get i
 
 ## Key features + demo
 - **Crisis view of the whole Krakow app with all existing issues**
+  
 <img width="2523" height="1181" alt="image" src="https://github.com/user-attachments/assets/b15c8ab6-f9ef-4e2d-93ea-51b1c1386be5" />
+
 - **Possibility to filter the map by the specific types of disasters, such as:** no heating/hot water; no water; no power; flooding; tram/bus problems; street blocked/traffic; danger
 - **Possibility to see users' messages with respect to historical context**
+  
 <img width="646" height="1177" alt="image" src="https://github.com/user-attachments/assets/18d751ba-e619-417b-88cf-2934c77f1e2a" />
 
 ## Installation guide
