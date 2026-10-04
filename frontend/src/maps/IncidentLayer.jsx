@@ -6,7 +6,7 @@ export default function IncidentLayer({ incidents, notices, selectedId, onSelect
   const detail = useZoom() >= DETAIL_ZOOM
   return (
     <>
-      {notices.filter((n) => n.kind === 'official').map((n) => (
+      {notices.filter((n) => n.kind === 'official' && n.area).map((n) => (   
         <GeoJSON key={`notice-${n.id}`} data={n.area} interactive={false}
           style={{ color: '#1f4e79', weight: detail ? 3 : 2, dashArray: detail ? undefined : '4 4', fill: false }} />
       ))}

@@ -1,8 +1,8 @@
 from flask import Blueprint, current_app, jsonify, request
 
 bp = Blueprint("reports", __name__)
-CATEGORIES = {"heating", "water", "power", "flood", "transit", "danger", "other"}
-STATUS = {"rate_limited": 429, "duplicate": 409, "outside_city": 422}
+CATEGORIES = {"heating", "water", "power", "flood", "road", "transit", "danger", "other"}
+STATUS = {"rate_limited": 429, "duplicate": 409, "outside_city": 422, "line_required": 400}
 
 
 @bp.post("/api/reports")
@@ -10,7 +10,8 @@ def post_report():
     d = request.get_json(silent=True) or {}
     try:
         r = {"device_id": str(d["device_id"])[:64], "category": d["category"], "kind": d.get("kind", "problem"),
-             "lat": float(d["lat"]), "lng": float(d["lng"]), "text": (d.get("text") or "")[:280] or None}
+             "lat": float(d["lat"]), "lng": float(d["lng"]), "text": (d.get("text") or "")[:280] or None,
+             "line": str(d["line"])[:8] if d.get("line") else None, "stop_id": str(d["stop_id"])[:32] if d.get("stop_id") else None}
     except (KeyError, TypeError, ValueError):
         return jsonify(accepted=False, reason="bad_request"), 400
     if r["category"] not in CATEGORIES or r["kind"] not in ("problem", "fine"):

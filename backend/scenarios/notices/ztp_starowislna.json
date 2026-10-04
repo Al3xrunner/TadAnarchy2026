@@ -1,0 +1,16 @@
+{
+  "id": "ztp-starowislna",
+  "source": "ZTP Kraków",
+  "kind": "official",
+  "category": "transit",
+  "title": "Wstrzymany ruch tramwajów na ul. Starowiślnej",
+  "title_en": "Trams stopped on Starowiślna",
+  "summary": "Trams 3, 69, 74 and 77 do not run along Starowiślna because of track damage; they are diverted. Expect delays.",
+  "summary_pl": "Tramwaje linii 3, 69, 74 i 77 nie kursują ul. Starowiślną z powodu uszkodzenia torowiska; kursują objazdem.",
+  "text_pl": "ZTP Kraków: z powodu uszkodzenia torowiska na ul. Starowiślnej wstrzymany został ruch tramwajów. Tramwaje linii 3, 69, 74 i 77 kursują objazdem. Prosimy o korzystanie z komunikacji zastępczej.",
+  "affected_lines": ["3", "69", "74", "77"],
+  "area_file": "areas/starowislna.geojson",
+  "area_feature": "zone",
+  "reconstructed": true,
+  "note": "Based on a real event (a rail buckled on Starowiślna in summer heat and tram traffic was stopped). Line numbers are from the current timetable."
+}

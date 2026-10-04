@@ -1,0 +1,48 @@
+id: flood_biezanow
+title: "Flash flood – Bieżanowska + Nowy Bieżanów P+R tram loop"
+based_on_real_event: true
+start_clock: "16:40"
+seed: 11
+recommended_users: 20000
+background:
+  reports_per_user_per_day: 0.02
+incidents:
+  - id: street_flooded
+    category: flood
+    mode: passersby
+    line: {file: scenarios/areas/flood_biezanow.geojson, feature: street}
+    flow_per_hour: 2500           
+    start_min: 5
+    end_min: 95
+    p_report: 0.30
+    delay: {median_min: 3, sigma: 0.5}
+  - id: basements
+    category: flood
+    mode: residents
+    area: {file: scenarios/areas/flood_biezanow.geojson, feature: zone}
+    start_min: 15
+    end_min: 180
+    p_report: 0.15
+    delay: {median_min: 20, sigma: 0.8}
+  - id: trams_cut
+    category: transit
+    mode: line                     
+    lines: [3, 9, 13, 49, 69]
+    stops: ["Nowy Bieżanów P+R", "Ćwiklińskiej", "Nowy Prokocim", "Teligi"]
+    riders_per_hour: 900
+    start_min: 10
+    end_min: 120
+    p_report: 0.40
+    delay: {median_min: 6, sigma: 0.6}
+  - id: street_blocked
+    category: road                 
+    mode: passersby
+    line: {file: scenarios/areas/flood_biezanow.geojson, feature: street}
+    flow_per_hour: 1500
+    start_min: 8
+    end_min: 95
+    p_report: 0.35
+    delay: {median_min: 4, sigma: 0.5}
+events:
+  - {at_min: 25, type: notice_add, file: scenarios/notices/ztp_flood_biezanow.json}
+  - {at_min: 45, type: notice_add, file: scenarios/notices/news_flood_biezanow.json}

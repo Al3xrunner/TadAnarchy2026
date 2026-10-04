@@ -28,27 +28,32 @@ def create_app(start_engine=True):
             engine.handle("load", {"scenario": app.config["DEFAULT_SCENARIO"], "users": app.config["DEFAULT_USERS"],
                                    "seed": 42})
             runner = EngineRunner(engine, db_queue=writer.queue)
+            if os.environ.get("TRANSIT_LIVE", "1").strip() != "0":      
+                from engine.live_transit import TransitFeed
+                feed = TransitFeed(engine.lines, offline_dir=os.environ.get("TRANSIT_FEED_DIR"))
+                feed.start()
+                app.extensions["transit_feed"] = feed
         runner.start()
         app.extensions["runner"] = runner
 
-    from api import comments, director, geo, history, reports, stream
+    from api import comments, director, geo, history, reports, stream, transit
     from api.comments import CommentStore
     app.extensions["comment_store"] = CommentStore(
         os.environ.get("COMMENTS_FILE", os.path.join(os.path.dirname(__file__), "forum_comments.json"))
     )
-    for module in (reports, stream, comments, director, geo, history):
+    for module in (reports, stream, comments, director, geo, history, transit):
         app.register_blueprint(module.bp)
 
     from db.load import register_cli
     register_cli(app)
 
-    
     dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
 
     @app.get("/")
     @app.get("/app")
     @app.get("/dashboard")
     @app.get("/director")
+    @app.get("/transit")
     def spa():
         return send_from_directory(dist, "index.html")
 

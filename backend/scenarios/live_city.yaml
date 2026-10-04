@@ -15,3 +15,11 @@ random_incidents:
             notice: {prob: 0.8, after_min: [30, 90], source: "MPEC"}}
   flood:   {per_day: 0.3, rings: [0, 1], hours: [0.5, 2], p_report: 0.3,  delay: {median_min: 5, sigma: 0.5},
             notice: {prob: 0.2, after_min: [20, 40], source: "Państwowa Straż Pożarna"}}
+random_line_incidents:
+  per_day: 6
+  stops_span: [2, 6]            
+  hours: [0.3, 2]
+  riders_per_hour: [200, 900]
+  p_report: 0.3
+  delay: {median_min: 6, sigma: 0.6}
+  notice: {prob: 0.4, after_min: [10, 30], source: "ZTP Kraków"}

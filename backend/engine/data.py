@@ -12,7 +12,8 @@ class DataPack:
 
     def __init__(self, root, extra_scenarios=None):
         self.root = Path(root)
-        self.scenario_dirs = [self.root / "scenarios"] + ([Path(extra_scenarios)] if extra_scenarios else [])
+        self.extra = Path(extra_scenarios) if extra_scenarios else None
+        self.scenario_dirs = ([self.extra] if self.extra else []) + [self.root / "scenarios"]
         self.cells8 = self.json("cells_res8.json")["cells"]      
         self.pop11 = self.json("cells_res11.json")["cells"]      
         self.look10 = self.json("lookup_res10.json")["cells"]    
@@ -25,7 +26,10 @@ class DataPack:
         self._cache = {}
 
     def json(self, rel):
-        with open(self.root / rel, encoding="utf-8") as f:
+        p = self.root / rel
+        if not p.exists() and self.extra and (self.extra / rel).exists():
+            p = self.extra / rel
+        with open(p, encoding="utf-8") as f:
             return json.load(f)
 
     def feature(self, ref):

@@ -20,9 +20,11 @@ class Ingest:
         self.last = {}                     
         self.rejected = 0
 
-    def __call__(self, device_id, category, kind, t, *, lat=None, lng=None, cell11=None, source="sim", text=None):
+    def __call__(self, device_id, category, kind, t, *, lat=None, lng=None, cell11=None, source="sim", text=None,  line=None, stop_id=None):
         if category not in CATEGORIES:
             return self._reject("bad_category")
+        if category == "transit" and not line:
+            return self._reject("line_required")
         if cell11 is None:
             cell11 = h3.latlng_to_cell(lat, lng, 11)          
         cell8 = h3.cell_to_parent(cell11, 8)
@@ -33,14 +35,14 @@ class Ingest:
             q.popleft()
         if kind == "problem" and len(q) >= RATE_LIMIT:
             return self._reject("rate_limited")
-        key = (device_id, category, cell8, kind)
+        key = (device_id, category, line or cell8, kind)
         if key in self.last and t - self.last[key] < CATEGORIES[category][0]:
             return self._reject("duplicate")
         self.last[key] = t
         if kind == "problem":
             q.append(t)
         r = Report(uuid.uuid4().hex[:12], device_id, category, kind, t, cell11,
-                   h3.cell_to_parent(cell11, 10), cell8, source, text)
+                   h3.cell_to_parent(cell11, 10), cell8, source, text, line, stop_id)
         self.store.add(r)
         return {"accepted": True, "reason": None, "report": r}
 

@@ -5,10 +5,13 @@ import MapView from '../maps/MapView'
 import HexLayer from '../maps/HexLayer'
 import BuildingTiles from '../maps/BuildingTiles'
 import IncidentLayer from '../maps/IncidentLayer'
+import LineIncidentLayer from '../maps/LineIncidentLayer'
+import LineIncidentSheet from './LineIncidentSheet'
 import { DETAIL_ZOOM } from '../maps/useZoom'
 import IncidentSheet from './IncidentSheet'
 import { useCommunityIdentity } from './useCommunityIdentity'
 import './dashboard.css'
+
 
 export default function Dashboard() {
   const { snap, status } = useSnapshot()
@@ -24,6 +27,7 @@ export default function Dashboard() {
     .filter((i) => filter === 'all' || i.cat === filter)
     .sort((a, b) => Number(!!a.related_to) - Number(!!b.related_to))      
   const selected = snap.incidents.find((i) => i.id === selectedId) ?? null
+  const selectedLine = (snap.line_incidents ?? []).find((i) => i.id === selectedId) ?? null
   const related = selected ? snap.incidents.find((x) => x.id === selected.related_to) ?? null : null
   const red = snap.incidents.filter((i) => i.level === 2 && !i.related_to)  
   const facilities = red.reduce((n, i) => n + i.facilities_total, 0)
@@ -54,9 +58,11 @@ export default function Dashboard() {
 
         {selected && (
           <IncidentSheet docked incident={selected} simT={snap.sim_t} home={null} related={related}
-              comments={snap.recent_comments ?? []} user={communityUser}
+            comments={snap.recent_comments ?? []} user={communityUser}
               onClose={() => setSelectedId(null)} />
           )}
+
+        {selectedLine && <LineIncidentSheet docked incident={selectedLine} simT={snap.sim_t} onClose={() => setSelectedId(null)} />}
 
         {list.length === 0 && <p className="muted">No incidents right now.</p>}
         {list.map((i) => (
@@ -71,6 +77,15 @@ export default function Dashboard() {
               {i.facilities_total > 0 && ` · ${i.facilities_total} facilities`}
             </div>
             {i.related_to && <div className="note">probably part of {i.related_to}</div>}
+          </div>
+        ))}
+
+        {(snap.line_incidents ?? []).length > 0 && <h3>Public transport</h3>}
+        {(snap.line_incidents ?? []).map((i) => (
+          <div key={i.id} className={`card level${i.level} ${i.id === selectedId ? 'sel' : ''}`} onClick={() => focus(i)}>
+            <span className="line-badge" style={{ background: i.color }}>{i.line}</span>
+            <span className={`chip ${i.confidence}`}>{i.label}</span>
+            <div className="muted">{i.devices} passengers · since {i.first_clock}</div>
           </div>
         ))}
 
@@ -124,6 +139,7 @@ export default function Dashboard() {
               if (incident) focus(incident)
             }} />
           <BuildingTiles incidents={snap.incidents} onPick={() => {}} />
+          <LineIncidentLayer incidents={snap.line_incidents ?? []} selectedId={selectedId} onSelect={focus} />
           <IncidentLayer incidents={list} notices={snap.notices} selectedId={selectedId} onSelect={focus} />
         </MapView>
       </main>

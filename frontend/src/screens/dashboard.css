@@ -57,3 +57,6 @@
   .dashboard { grid-template-columns: 1fr; grid-template-rows: 50vh 50vh; }
   .dashboard main { order: -1; }
 }
+
+.dashboard .line-badge { display: inline-block; min-width: 2rem; text-align: center; color: #fff; font-weight: 700; border-radius: 6px;
+                         padding: .05rem .4rem; margin-right: .4rem; }

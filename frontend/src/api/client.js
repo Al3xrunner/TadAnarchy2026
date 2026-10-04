@@ -7,11 +7,11 @@ export function deviceId() {
   return id
 }
 
-export async function postReport({ category, kind = 'problem', lat, lng, text }) {
+export async function postReport({ category, kind = 'problem', lat, lng, text, line, stop_id }) {
   try {
     const r = await fetch('/api/reports', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ category, kind, lat, lng, text, device_id: deviceId() }),
+      body: JSON.stringify({ category, kind, lat, lng, text, line, stop_id, device_id: deviceId() }),
     })
     return await r.json()
   } catch {
@@ -66,6 +66,7 @@ export function staticJson(path) {
   }
   return cache.get(path)
 }
+
 export async function director(path, body) {
   const r = await fetch(`/api/director/${path}`, {
     method: body ? 'POST' : 'GET',

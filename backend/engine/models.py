@@ -6,7 +6,8 @@ CATEGORIES = {
     "water":   (3600, 2, 3, 2),
     "power":   (3600, 2, 3, 2),
     "flood":   (1200, 2, 3, 2),
-    "transit": (1200, 2, 3, 1),
+    "transit": (1200, None, None, None),
+    "road":    (1200, 2, 3, 2),
     "danger":  (1200, 3, 5, 3),
     "other":   (3600, None, None, None),   
 }
@@ -27,3 +28,5 @@ class Report:
     cell8: str       
     source: str      
     text: str | None = None
+    line: str | None = None
+    stop_id: str | None = None

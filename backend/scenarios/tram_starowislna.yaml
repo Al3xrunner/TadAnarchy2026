@@ -1,0 +1,30 @@
+id: tram_starowislna
+title: "Buckled rail – trams stopped on Starowiślna (ZTP)"
+based_on_real_event: true
+start_clock: "15:10"
+seed: 21
+recommended_users: 20000
+background: {reports_per_user_per_day: 0.02}
+incidents:
+  - id: rail_buckle
+    category: transit
+    mode: line                     
+    lines: [3, 69, 74, 77]
+    riders_per_hour: 900           
+    start_min: 20
+    end_min: 150
+    p_report: 0.3
+    delay: {median_min: 7, sigma: 0.6}
+  - id: street_works
+    category: road                 
+    mode: passersby
+    line: {file: areas/starowislna.geojson, feature: street}
+    flow_per_hour: 2500
+    start_min: 35
+    end_min: 150
+    p_report: 0.35
+    delay: {median_min: 5, sigma: 0.5}
+events:
+  - {at_min: 40, type: notice_add, file: notices/ztp_starowislna.json}
+  - {at_min: 55, type: notice_add, file: notices/news_starowislna.json}
+  - {at_min: 60, type: notice_add, file: notices/road_starowislna.json}

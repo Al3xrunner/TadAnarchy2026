@@ -1,0 +1,12 @@
+{
+  "id": "zdmk-starowislna",
+  "source": "ZDMK",
+  "kind": "official",
+  "category": "road",
+  "title": "Utrudnienia w ruchu na ul. Starowiślnej (naprawa torowiska)",
+  "title_en": "Traffic restrictions on Starowiślna (track repair)",
+  "summary": "Emergency track repair: one lane closed on Starowiślna, expect traffic jams.",
+  "area_file": "areas/starowislna.geojson",
+  "area_feature": "zone",
+  "reconstructed": true
+}

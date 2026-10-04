@@ -8,7 +8,6 @@ from concurrent.futures import Future
 
 class EngineRunner:
 
-
     def __init__(self, engine, db_queue=None, tick_s=1.0):
         self.engine, self.db_queue, self.tick_s = engine, db_queue, tick_s
         self.inbox = queue.Queue()
@@ -25,7 +24,7 @@ class EngineRunner:
     def call(self, command, data, timeout=3.0):
         fut = Future()
         self.inbox.put((command, data, fut))
-        return fut.result(timeout=timeout)          # TimeoutError if the engine is stuck
+        return fut.result(timeout=timeout)          
 
     def wait_for_snapshot(self, last_version, timeout=15.0):
         with self._cond:
@@ -74,8 +73,9 @@ class EngineRunner:
             try:
                 result = self.engine.handle(command, data)
                 if command in ("report", "load", "add_notice"):
-                    self.engine.detector.run(self.engine.store.reports, self.engine.clock.t,
-                                             self.engine.notices, self.engine.scenario.truth)
+                    e = self.engine
+                    e.detector.run(e.store.reports, e.clock.t, e.notices, e.scenario.truth)
+                    e.line_detector.run(e.store.reports, e.clock.t, e.notices, e.scenario.line_truth, e.detector.incidents)
                 fut.set_result(result)
             except Exception as e:
                 traceback.print_exc()

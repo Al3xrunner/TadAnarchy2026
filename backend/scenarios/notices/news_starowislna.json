@@ -1,0 +1,15 @@
+{
+  "id": "news-starowislna",
+  "source": "Radio Kraków",
+  "kind": "news",
+  "category": "transit",
+  "title": "Wybrzuszona szyna na Starowiślnej",
+  "title_en": "Buckled rail on Starowiślna",
+  "summary": "Heat buckled a rail on Starowiślna; tram traffic was stopped until the track was repaired.",
+  "cause": "Rail buckled in the heat on Starowiślna",
+  "cause_pl": "Wybrzuszenie szyny w upale na ul. Starowiślnej",
+  "affected_lines": ["3", "69", "74", "77"],
+  "area_file": "areas/starowislna.geojson",
+  "area_feature": "zone",
+  "reconstructed": true
+}

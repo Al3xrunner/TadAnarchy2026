@@ -1,4 +1,3 @@
-
 import collections
 import heapq
 import math
@@ -7,7 +6,9 @@ from collections import namedtuple
 import h3
 import numpy as np
 
-SimReport = namedtuple("SimReport", "t device_id category kind cell11")
+from .line_sim import LineSim
+
+SimReport = namedtuple("SimReport", "t device_id category kind cell11 line stop_id", defaults=(None, None))
 HOURLY = [.2, .15, .1, .1, .15, .4, .9, 1.6, 1.8, 1.4, 1.1, 1, 1.1, 1, 1, 1.2, 1.4, 1.6, 1.8, 1.8, 1.6, 1.2, .8, .4]
 MIX = {"heating": .20, "water": .20, "power": .10, "transit": .25, "flood": .05, "danger": .02, "other": .18}
 KRAKOW_POP = 809_168
@@ -16,7 +17,7 @@ NOTICE_TITLES = {"water": "Awaria sieci wodociągowej", "power": "Awaria sieci e
 
 
 class Simulator:
-    def __init__(self, data, scenario, users, seed):
+    def __init__(self, data, scenario, users, seed, lines=None):
         self.rng = np.random.default_rng(seed)
         self.scenario, self.users = scenario, users
         h, m = map(int, scenario.start_clock.split(":"))
@@ -35,25 +36,27 @@ class Simulator:
         self.look10, self.pop11 = data.look10, data.pop11
         self.heap, self.seq, self.started = [], 0, set()
         self.pending_notices, self.n_random = [], 0
+        self.SimReport = SimReport
+        self.home8 = [h3.cell_to_parent(c, 8) for c in self.home]
+        self.line_sim = LineSim(self, lines) if lines else None      
 
-    # ---------------------------------------------------------------- per tick
     def reports_between(self, t0, t1):
-        
         lam = self.users * self.scenario.bg_rate * HOURLY[int(((self.start_s + t0) / 3600) % 24)] * (t1 - t0) / 86400
         n = int(self.rng.poisson(lam))
         if n:
             devs = self.rng.choice(self.users, size=n, p=self.activity)
             cats = self.rng.choice(len(self.cats), size=n, p=self.cat_p)
             for d, c in zip(devs, cats):
-                yield SimReport(float(self.rng.uniform(t0, t1)), f"sim-{d}", self.cats[c], "problem", self.home[d])
-        
+                t = float(self.rng.uniform(t0, t1))
+                if self.cats[c] == "transit" and self.line_sim:
+                    yield self.line_sim.background(t, int(d))      
+                else:
+                    yield SimReport(t, f"sim-{d}", self.cats[c], "problem", self.home[d])
         self._spawn_random(t0, t1)
-        
         for inc in self.scenario.incidents:
             if inc["id"] not in self.started and inc["start_t"] < t1:
                 self.started.add(inc["id"])
                 self._schedule(inc)
-        
         while self.heap and self.heap[0][0] < t1:
             yield heapq.heappop(self.heap)[2]
 
@@ -62,9 +65,8 @@ class Simulator:
         self.pending_notices = [(at, n) for at, n in self.pending_notices if at >= t1]
         return due
 
-    
     def _push(self, rep):
-        heapq.heappush(self.heap, (rep.t, self.seq, rep))     # seq breaks ties
+        heapq.heappush(self.heap, (rep.t, self.seq, rep))     
         self.seq += 1
 
     def _schedule(self, inc):
@@ -78,7 +80,10 @@ class Simulator:
         def category():
             return wrong["category"] if wrong and self.rng.random() < wrong["prob"] else inc["category"]
 
-        if inc["mode"] == "residents":
+        if inc["mode"] == "line":
+            if self.line_sim:
+                self.line_sim.schedule(inc)
+        elif inc["mode"] == "residents":
             for c in inc["cells11"]:
                 for d in self.by_home.get(c, ()):
                     if self.rng.random() < inc["p_report"]:
@@ -99,8 +104,9 @@ class Simulator:
                     t = inc["start_t"] + float(self.rng.uniform(0, inc.get("duration_min", 5) * 60))
                     self._push(SimReport(t, f"troll-{k}", inc["category"], "problem", inc["point_cell11"]))
 
-    
     def _spawn_random(self, t0, t1):
+        if self.line_sim:
+            self.line_sim.spawn_random(t0, t1)
         for cat, cfg in self.scenario.random.items():
             for _ in range(int(self.rng.poisson(cfg["per_day"] * (t1 - t0) / 86400))):
                 start = float(self.rng.uniform(t0, t1))
@@ -113,7 +119,7 @@ class Simulator:
                        "cells11": cells11, "start_t": start,
                        "end_t": start + float(self.rng.uniform(*cfg["hours"])) * 3600,
                        "p_report": cfg["p_report"], "delay": cfg["delay"]}
-                self.scenario.incidents.append(inc)           
+                self.scenario.incidents.append(inc)            
                 self.scenario.truth.append({"id": inc["id"], "cat": cat, "start_t": start,
                                             "cells8": {h3.cell_to_parent(c, 8) for c in cells10}})
                 n = cfg.get("notice")

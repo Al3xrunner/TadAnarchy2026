@@ -1,0 +1,745 @@
+{
+"source": "ZTP Kraków GTFS 2026-09-30",
+"routes": {
+"102": {
+"line": "102",
+"mode": "bus"
+},
+"104": {
+"line": "104",
+"mode": "bus"
+},
+"105": {
+"line": "105",
+"mode": "bus"
+},
+"107": {
+"line": "107",
+"mode": "bus"
+},
+"111": {
+"line": "111",
+"mode": "bus"
+},
+"112": {
+"line": "112",
+"mode": "bus"
+},
+"113": {
+"line": "113",
+"mode": "bus"
+},
+"116": {
+"line": "116",
+"mode": "bus"
+},
+"120": {
+"line": "120",
+"mode": "bus"
+},
+"121": {
+"line": "121",
+"mode": "bus"
+},
+"122": {
+"line": "122",
+"mode": "bus"
+},
+"123": {
+"line": "123",
+"mode": "bus"
+},
+"124": {
+"line": "124",
+"mode": "bus"
+},
+"125": {
+"line": "125",
+"mode": "bus"
+},
+"126": {
+"line": "126",
+"mode": "bus"
+},
+"127": {
+"line": "127",
+"mode": "bus"
+},
+"128": {
+"line": "128",
+"mode": "bus"
+},
+"130": {
+"line": "130",
+"mode": "bus"
+},
+"132": {
+"line": "132",
+"mode": "bus"
+},
+"134": {
+"line": "134",
+"mode": "bus"
+},
+"137": {
+"line": "137",
+"mode": "bus"
+},
+"138": {
+"line": "138",
+"mode": "bus"
+},
+"139": {
+"line": "139",
+"mode": "bus"
+},
+"140": {
+"line": "140",
+"mode": "bus"
+},
+"144": {
+"line": "144",
+"mode": "bus"
+},
+"146": {
+"line": "146",
+"mode": "bus"
+},
+"148": {
+"line": "148",
+"mode": "bus"
+},
+"149": {
+"line": "149",
+"mode": "bus"
+},
+"150": {
+"line": "150",
+"mode": "bus"
+},
+"151": {
+"line": "151",
+"mode": "bus"
+},
+"153": {
+"line": "153",
+"mode": "bus"
+},
+"155": {
+"line": "155",
+"mode": "bus"
+},
+"156": {
+"line": "156",
+"mode": "bus"
+},
+"158": {
+"line": "158",
+"mode": "bus"
+},
+"160": {
+"line": "160",
+"mode": "bus"
+},
+"161": {
+"line": "161",
+"mode": "bus"
+},
+"162": {
+"line": "162",
+"mode": "bus"
+},
+"163": {
+"line": "163",
+"mode": "bus"
+},
+"164": {
+"line": "164",
+"mode": "bus"
+},
+"168": {
+"line": "168",
+"mode": "bus"
+},
+"169": {
+"line": "169",
+"mode": "bus"
+},
+"171": {
+"line": "171",
+"mode": "bus"
+},
+"173": {
+"line": "173",
+"mode": "bus"
+},
+"174": {
+"line": "174",
+"mode": "bus"
+},
+"175": {
+"line": "175",
+"mode": "bus"
+},
+"176": {
+"line": "176",
+"mode": "bus"
+},
+"179": {
+"line": "179",
+"mode": "bus"
+},
+"182": {
+"line": "182",
+"mode": "bus"
+},
+"183": {
+"line": "183",
+"mode": "bus"
+},
+"191": {
+"line": "191",
+"mode": "bus"
+},
+"192": {
+"line": "192",
+"mode": "bus"
+},
+"194": {
+"line": "194",
+"mode": "bus"
+},
+"195": {
+"line": "195",
+"mode": "bus"
+},
+"199": {
+"line": "199",
+"mode": "bus"
+},
+"200": {
+"line": "200",
+"mode": "bus"
+},
+"202": {
+"line": "202",
+"mode": "bus"
+},
+"203": {
+"line": "203",
+"mode": "bus"
+},
+"204": {
+"line": "204",
+"mode": "bus"
+},
+"207": {
+"line": "207",
+"mode": "bus"
+},
+"209": {
+"line": "209",
+"mode": "bus"
+},
+"210": {
+"line": "210",
+"mode": "bus"
+},
+"211": {
+"line": "211",
+"mode": "bus"
+},
+"212": {
+"line": "212",
+"mode": "bus"
+},
+"214": {
+"line": "214",
+"mode": "bus"
+},
+"215": {
+"line": "215",
+"mode": "bus"
+},
+"217": {
+"line": "217",
+"mode": "bus"
+},
+"218": {
+"line": "218",
+"mode": "bus"
+},
+"219": {
+"line": "219",
+"mode": "bus"
+},
+"220": {
+"line": "220",
+"mode": "bus"
+},
+"221": {
+"line": "221",
+"mode": "bus"
+},
+"222": {
+"line": "222",
+"mode": "bus"
+},
+"223": {
+"line": "223",
+"mode": "bus"
+},
+"224": {
+"line": "224",
+"mode": "bus"
+},
+"225": {
+"line": "225",
+"mode": "bus"
+},
+"227": {
+"line": "227",
+"mode": "bus"
+},
+"228": {
+"line": "228",
+"mode": "bus"
+},
+"229": {
+"line": "229",
+"mode": "bus"
+},
+"230": {
+"line": "230",
+"mode": "bus"
+},
+"232": {
+"line": "232",
+"mode": "bus"
+},
+"233": {
+"line": "233",
+"mode": "bus"
+},
+"234": {
+"line": "234",
+"mode": "bus"
+},
+"235": {
+"line": "235",
+"mode": "bus"
+},
+"238": {
+"line": "238",
+"mode": "bus"
+},
+"239": {
+"line": "239",
+"mode": "bus"
+},
+"240": {
+"line": "240",
+"mode": "bus"
+},
+"242": {
+"line": "242",
+"mode": "bus"
+},
+"243": {
+"line": "243",
+"mode": "bus"
+},
+"244": {
+"line": "244",
+"mode": "bus"
+},
+"245": {
+"line": "245",
+"mode": "bus"
+},
+"247": {
+"line": "247",
+"mode": "bus"
+},
+"248": {
+"line": "248",
+"mode": "bus"
+},
+"249": {
+"line": "249",
+"mode": "bus"
+},
+"250": {
+"line": "250",
+"mode": "bus"
+},
+"253": {
+"line": "253",
+"mode": "bus"
+},
+"254": {
+"line": "254",
+"mode": "bus"
+},
+"255": {
+"line": "255",
+"mode": "bus"
+},
+"257": {
+"line": "257",
+"mode": "bus"
+},
+"258": {
+"line": "258",
+"mode": "bus"
+},
+"259": {
+"line": "259",
+"mode": "bus"
+},
+"260": {
+"line": "260",
+"mode": "bus"
+},
+"262": {
+"line": "262",
+"mode": "bus"
+},
+"264": {
+"line": "264",
+"mode": "bus"
+},
+"265": {
+"line": "265",
+"mode": "bus"
+},
+"267": {
+"line": "267",
+"mode": "bus"
+},
+"268": {
+"line": "268",
+"mode": "bus"
+},
+"269": {
+"line": "269",
+"mode": "bus"
+},
+"270": {
+"line": "270",
+"mode": "bus"
+},
+"271": {
+"line": "271",
+"mode": "bus"
+},
+"272": {
+"line": "272",
+"mode": "bus"
+},
+"274": {
+"line": "274",
+"mode": "bus"
+},
+"275": {
+"line": "275",
+"mode": "bus"
+},
+"277": {
+"line": "277",
+"mode": "bus"
+},
+"278": {
+"line": "278",
+"mode": "bus"
+},
+"279": {
+"line": "279",
+"mode": "bus"
+},
+"280": {
+"line": "280",
+"mode": "bus"
+},
+"283": {
+"line": "283",
+"mode": "bus"
+},
+"284": {
+"line": "284",
+"mode": "bus"
+},
+"285": {
+"line": "285",
+"mode": "bus"
+},
+"288": {
+"line": "288",
+"mode": "bus"
+},
+"290": {
+"line": "290",
+"mode": "bus"
+},
+"293": {
+"line": "293",
+"mode": "bus"
+},
+"297": {
+"line": "297",
+"mode": "bus"
+},
+"298": {
+"line": "298",
+"mode": "bus"
+},
+"300": {
+"line": "300",
+"mode": "bus"
+},
+"301": {
+"line": "301",
+"mode": "bus"
+},
+"304": {
+"line": "304",
+"mode": "bus"
+},
+"307": {
+"line": "307",
+"mode": "bus"
+},
+"310": {
+"line": "310",
+"mode": "bus"
+},
+"317": {
+"line": "317",
+"mode": "bus"
+},
+"337": {
+"line": "337",
+"mode": "bus"
+},
+"405": {
+"line": "405",
+"mode": "bus"
+},
+"420": {
+"line": "420",
+"mode": "bus"
+},
+"434": {
+"line": "434",
+"mode": "bus"
+},
+"469": {
+"line": "469",
+"mode": "bus"
+},
+"475": {
+"line": "475",
+"mode": "bus"
+},
+"476": {
+"line": "476",
+"mode": "bus"
+},
+"494": {
+"line": "494",
+"mode": "bus"
+},
+"502": {
+"line": "502",
+"mode": "bus"
+},
+"503": {
+"line": "503",
+"mode": "bus"
+},
+"513": {
+"line": "513",
+"mode": "bus"
+},
+"572": {
+"line": "572",
+"mode": "bus"
+},
+"601": {
+"line": "601",
+"mode": "bus"
+},
+"605": {
+"line": "605",
+"mode": "bus"
+},
+"608": {
+"line": "608",
+"mode": "bus"
+},
+"609": {
+"line": "609",
+"mode": "bus"
+},
+"610": {
+"line": "610",
+"mode": "bus"
+},
+"611": {
+"line": "611",
+"mode": "bus"
+},
+"662": {
+"line": "662",
+"mode": "bus"
+},
+"664": {
+"line": "664",
+"mode": "bus"
+},
+"669": {
+"line": "669",
+"mode": "bus"
+},
+"704": {
+"line": "704",
+"mode": "bus"
+},
+"708": {
+"line": "708",
+"mode": "bus"
+},
+"902": {
+"line": "902",
+"mode": "bus"
+},
+"903": {
+"line": "903",
+"mode": "bus"
+},
+"904": {
+"line": "904",
+"mode": "bus"
+},
+"910": {
+"line": "910",
+"mode": "bus"
+},
+"915": {
+"line": "915",
+"mode": "bus"
+},
+"917": {
+"line": "917",
+"mode": "bus"
+},
+"918": {
+"line": "918",
+"mode": "bus"
+},
+"937": {
+"line": "937",
+"mode": "bus"
+},
+"948": {
+"line": "948",
+"mode": "bus"
+},
+"LR0": {
+"line": "LR0",
+"mode": "bus"
+},
+"route_2": {
+"line": "7",
+"mode": "tram"
+},
+"route_31": {
+"line": "1",
+"mode": "tram"
+},
+"route_46": {
+"line": "22",
+"mode": "tram"
+},
+"route_53": {
+"line": "62",
+"mode": "tram"
+},
+"route_55": {
+"line": "3",
+"mode": "tram"
+},
+"route_56": {
+"line": "69",
+"mode": "tram"
+},
+"route_58": {
+"line": "9",
+"mode": "tram"
+},
+"route_59": {
+"line": "11",
+"mode": "tram"
+},
+"route_69": {
+"line": "18",
+"mode": "tram"
+},
+"route_698": {
+"line": "21",
+"mode": "tram"
+},
+"route_736": {
+"line": "76",
+"mode": "tram"
+},
+"route_754": {
+"line": "70",
+"mode": "tram"
+},
+"route_755": {
+"line": "74",
+"mode": "tram"
+},
+"route_807": {
+"line": "8",
+"mode": "tram"
+},
+"route_808": {
+"line": "13",
+"mode": "tram"
+},
+"route_809": {
+"line": "20",
+"mode": "tram"
+},
+"route_924": {
+"line": "12",
+"mode": "tram"
+},
+"route_930": {
+"line": "15",
+"mode": "tram"
+},
+"route_942": {
+"line": "5",
+"mode": "tram"
+},
+"route_943": {
+"line": "14",
+"mode": "tram"
+},
+"route_944": {
+"line": "49",
+"mode": "tram"
+},
+"route_957": {
+"line": "16",
+"mode": "tram"
+},
+"route_982": {
+"line": "77",
+"mode": "tram"
+}
+}
+}

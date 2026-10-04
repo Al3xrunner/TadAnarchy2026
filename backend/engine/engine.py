@@ -8,22 +8,25 @@ from .clock import SimClock
 from .data import DataPack
 from .detection import Detector
 from .ingest import Ingest
+from .line_detection import LineDetector
+from .lines import LineIndex
 from .models import CATEGORIES
 from .scenario import Scenario, list_scenarios
 from .simulator import Simulator
 from .store import ReportStore
 
-NOTICE_PUBLIC = ("id", "kind", "source", "cat", "title", "summary", "url", "area")
+NOTICE_PUBLIC = ("id", "kind", "source", "cat", "title", "summary", "url", "area", "lines")
 
 
 class Engine:
-
 
     def __init__(self, data_dir, extra_scenarios=None):
         self.data = DataPack(data_dir, extra_scenarios)
         self.store = ReportStore()
         self.ingest = Ingest(self.store, self.data)
         self.detector = Detector(self.data)
+        self.lines = LineIndex(self.data)
+        self.line_detector = LineDetector(self.lines)
         self.clock = SimClock()
         self.scenario = self.sim = None
         self.notices = {}
@@ -31,14 +34,18 @@ class Engine:
         self.version = 0
         self._db_rows = []
 
-
     def handle(self, command, d):
         if command == "report":
-            res = self.ingest(d["device_id"], d["category"], d["kind"], self.clock.t,
-                              lat=d["lat"], lng=d["lng"], source="human", text=d.get("text"))
+            stop = self.lines.stops.get(d.get("stop_id"))
+            lat, lng = (stop["lat"], stop["lng"]) if stop else (d["lat"], d["lng"])   
+            res = self.ingest(d["device_id"], d["category"], d["kind"], self.clock.t, lat=lat, lng=lng,
+                              source="human", text=d.get("text"), line=d.get("line"), stop_id=d.get("stop_id"))
             r = res["report"]
-            return {"accepted": res["accepted"], "reason": res["reason"],
-                    "nearby_devices": self.devices_near(r.cell8, r.category) if r else 0,
+            if r and r.category == "transit":
+                nearby = self.line_detector.devices_on(r.line, self.store.reports, self.clock.t)
+            else:
+                nearby = self.devices_near(r.cell8, r.category) if r else 0
+            return {"accepted": res["accepted"], "reason": res["reason"], "nearby_devices": nearby,
                     "cell8": r.cell8 if r else None}
         if command == "speed":
             self.clock.speed = max(0.0, float(d["speed"]))
@@ -53,7 +60,6 @@ class Engine:
         raise ValueError(f"unknown command {command}")
 
     def devices_near(self, cell8, category):
-
         win = CATEGORIES[category][0]
         now = self.clock.t
         return len({r.device_id for r in self.store.reports
@@ -66,8 +72,9 @@ class Engine:
         self.store.clear()
         self.ingest.reset()
         self.detector.reset()
+        self.line_detector.reset()
         self.notices.clear()
-        self.sim = Simulator(self.data, self.scenario, users, seed)
+        self.sim = Simulator(self.data, self.scenario, users, seed, self.lines)
         self.run = {"id": int(time.time() * 1000), "scenario": scenario_id, "title": self.scenario.title,
                     "users": users, "seed": seed}
         self._db_rows.append(("run", dict(self.run)))
@@ -77,7 +84,6 @@ class Engine:
         self.store.new.clear()                      
         return {"ok": True, "run": self.run, "load_s": round(time.time() - t0, 2)}
 
-    
     def step(self, real_dt):
         if self.sim is None or self.clock.speed == 0:
             return
@@ -87,7 +93,7 @@ class Engine:
         t0, t1 = self.clock.t, self.clock.t + dt
         self.clock.t = t1
         for r in self.sim.reports_between(t0, t1):
-            self.ingest(r.device_id, r.category, r.kind, r.t, cell11=r.cell11, source="sim")
+            self.ingest(r.device_id, r.category, r.kind, r.t, cell11=r.cell11, source="sim", line=r.line, stop_id=r.stop_id)
         for ev in self.scenario.events_between(t0, t1):
             if ev["type"] == "notice_add":
                 n = self.scenario.load_notice(ev["file"])
@@ -100,6 +106,7 @@ class Engine:
             del self.notices[nid]
         self.store.expire(t1)
         self.detector.run(self.store.reports, t1, self.notices, self.scenario.truth)
+        self.line_detector.run(self.store.reports, t1, self.notices, self.scenario.line_truth, self.detector.incidents)
 
     def snapshot(self):
         self.version += 1
@@ -111,15 +118,18 @@ class Engine:
             "cells": [{"h3": c, "cat": cat, "level": l, "devices": n, "fine": f}
                       for (c, cat), (l, n, f) in det.levels.items()],
             "incidents": [{**i, "first_clock": self.clock.label(i["first_t"])} for i in incidents],
+            "line_incidents": self.line_detector.public(self.clock),
             "notices": [{k: n.get(k) for k in NOTICE_PUBLIC} for n in self.notices.values()],
             "metrics": {"reports_10min": det.reports_10min, "rejected": self.ingest.rejected,
-                        "false_alarms": len(det.false_alarms), "active_reports": len(self.store.reports),
-                        "detect": det.detect},
+                        "false_alarms": len(det.false_alarms) + len(self.line_detector.false_alarms),
+                        "active_reports": len(self.store.reports),
+                        "detect": {**det.detect, **self.line_detector.detect}},
         }
 
     def drain_db_rows(self):
         run_id = self.run.get("id")
         rows = self._db_rows + [("report", {**asdict(r), "run_id": run_id}) for r in self.store.new]
         rows += [("incident", {**i, "run_id": run_id}) for i in self.detector.changed_incidents()]
+        rows += [("incident", {**i, "run_id": run_id}) for i in self.line_detector.changed()]
         self._db_rows, self.store.new = [], []
         return rows
