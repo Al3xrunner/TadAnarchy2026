@@ -4,6 +4,8 @@
 
 ```bash
 https://scar-16-olek.tail516b3d.ts.net/app
+https://scar-16-olek.tail516b3d.ts.net/dashboard
+https://scar-16-olek.tail516b3d.ts.net/transit
 ```
 
 ## Overview
