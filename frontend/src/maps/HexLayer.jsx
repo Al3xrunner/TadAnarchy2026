@@ -5,18 +5,26 @@ import { staticJson } from '../api/client'
 import { LEVEL_COLOR } from '../api/categories'
 import { DETAIL_ZOOM, useZoom } from './useZoom'
 
-export default function HexLayer({ cells, category = 'all', minDevices = 0 }) {
+export default function HexLayer({ cells, category = 'all', minDevices = 0, onSelectCell }) {
   const map = useMap()
   const zoom = useZoom()
   const byId = useRef(new Map())
+  const onSelectCellRef = useRef(onSelectCell)
   const [ready, setReady] = useState(false)
+
+  useEffect(() => { onSelectCellRef.current = onSelectCell }, [onSelectCell])
 
   useEffect(() => {                                 
     let layer = null
     let alive = true
     staticJson('cells_res8.geojson').then((gj) => {
       if (!alive) return
-      layer = L.geoJSON(gj, { style: { color: '#ffffff', weight: 0.5, fillOpacity: 0, opacity: 0.4 }, interactive: false })
+      layer = L.geoJSON(gj, {
+        style: { color: '#ffffff', weight: 0.5, fillOpacity: 0, opacity: 0.4 },
+        onEachFeature: (feature, path) => path.on('click', () => {
+          onSelectCellRef.current?.(feature.id)
+        }),
+      })
       layer.eachLayer((l) => byId.current.set(l.feature.id, l))
       layer.addTo(map)
       setReady(true)

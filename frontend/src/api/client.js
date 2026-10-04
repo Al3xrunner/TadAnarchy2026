@@ -19,6 +19,19 @@ export async function postReport({ category, kind = 'problem', lat, lng, text })
   }
 }
 
+export async function postComment({ incident_id, user, text }) {
+  const response = await fetch('/api/comments', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ incident_id, user, text }),
+  })
+  const result = await response.json()
+  if (!response.ok) {
+    throw new Error(result.error ?? `Could not post update (${response.status}).`)
+  }
+  return result
+}
+
 export async function geocode(q) {
   try {
     const r = await fetch(`/api/geocode?q=${encodeURIComponent(q)}`)

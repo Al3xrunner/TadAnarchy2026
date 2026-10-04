@@ -56,3 +56,17 @@
 .phone .hits { position: absolute; bottom: 100%; left: 0; right: 0; background: #fff; border: 1px solid var(--line); border-radius: 10px;
                z-index: 700; box-shadow: 0 -4px 14px rgba(0,0,0,.12); }
 .phone .hits button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; }
+.phone .incident-chat { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .5rem; }
+.phone .incident-chat h3 { margin: .25rem 0 .45rem; font-size: 1rem; }
+.phone .incident-chat__comments { max-height: 150px; overflow: auto; }
+.phone .incident-chat__comments > .muted { margin: .4rem 0; }
+.phone .incident-chat__comment { padding: .35rem 0; border-bottom: 1px solid var(--line); font-size: .86rem; }
+.phone .incident-chat__comment time { float: right; color: var(--muted); }
+.phone .incident-chat__comment p { margin: .2rem 0; overflow-wrap: anywhere; }
+.phone .incident-chat__quick { display: flex; flex-wrap: wrap; gap: .3rem; margin: .5rem 0; }
+.phone .incident-chat__quick button { padding: .3rem .45rem; font-size: .78rem; }
+.phone .incident-chat form { display: flex; gap: .35rem; }
+.phone .incident-chat form input { min-width: 0; flex: 1; }
+.phone .incident-chat form button { padding: .45rem .55rem; font-size: .82rem; }
+.phone .incident-chat button:disabled { cursor: not-allowed; opacity: .55; }
+.phone .incident-chat__error { color: #b3261e; font-size: .82rem; }

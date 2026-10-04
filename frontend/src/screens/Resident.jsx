@@ -10,6 +10,7 @@ import { DETAIL_ZOOM } from '../maps/useZoom'
 import IncidentSheet from './IncidentSheet'
 import AddressSearch from './AddressSearch'
 import { useLocalStorage } from './useLocalStorage'
+import { useCommunityIdentity } from './useCommunityIdentity'
 import './resident.css'
 
 const REASONS = {
@@ -25,6 +26,7 @@ export default function Resident() {
   const [mode, setMode] = useState('browse')          // browse | pick | danger | done
   const [message, setMessage] = useState('')
   const [home, setHome] = useLocalStorage('home', null)
+  const communityUser = useCommunityIdentity(home)
   const [building, setBuilding] = useState(null)
   const [dismissedHomeToastKey, setDismissedHomeToastKey] = useState(null)
   const homeIncident = snap && home
@@ -85,7 +87,14 @@ export default function Resident() {
 
       <div className="map-wrap">
         <MapView onReady={setMap}>
-          <HexLayer cells={snap.cells} category="all" />
+          <HexLayer
+            cells={snap.cells}
+            category="all"
+            onSelectCell={(cellId) => {
+              const incident = snap.incidents.find((item) => item.cells8?.includes(cellId))
+              if (incident) focus(incident)
+            }}
+          />
           <BuildingTiles incidents={snap.incidents} onPick={setBuilding} />
           <IncidentLayer incidents={snap.incidents} notices={snap.notices} selectedId={selectedId} onSelect={focus} />
         </MapView>
@@ -154,6 +163,7 @@ export default function Resident() {
 
       {selected && mode === 'browse' && (
         <IncidentSheet incident={selected} simT={snap.sim_t} home={home} related={related}
+          comments={snap.recent_comments ?? []} user={communityUser}
           onClose={() => setSelectedId(null)}
           onMeToo={() => send(selected.cat, 'problem', meTooAt(selected))}
           onFine={() => send(selected.cat, 'fine', meTooAt(selected))} />

@@ -7,13 +7,16 @@ import BuildingTiles from '../maps/BuildingTiles'
 import IncidentLayer from '../maps/IncidentLayer'
 import { DETAIL_ZOOM } from '../maps/useZoom'
 import IncidentSheet from './IncidentSheet'
+import { useCommunityIdentity } from './useCommunityIdentity'
 import './dashboard.css'
 
 export default function Dashboard() {
   const { snap, status } = useSnapshot()
   const [filter, setFilter] = useState('all')
   const [selectedId, setSelectedId] = useState(null)
+  const [sidebarTab, setSidebarTab] = useState('official')
   const [map, setMap] = useState(null)
+  const communityUser = useCommunityIdentity()
 
   if (!snap) return <div className="dashboard center">Connecting…</div>
 
@@ -51,8 +54,9 @@ export default function Dashboard() {
 
         {selected && (
           <IncidentSheet docked incident={selected} simT={snap.sim_t} home={null} related={related}
-            onClose={() => setSelectedId(null)} />
-        )}
+              comments={snap.recent_comments ?? []} user={communityUser}
+              onClose={() => setSelectedId(null)} />
+          )}
 
         {list.length === 0 && <p className="muted">No incidents right now.</p>}
         {list.map((i) => (
@@ -70,17 +74,55 @@ export default function Dashboard() {
           </div>
         ))}
 
-        {snap.notices.length > 0 && (
-          <>
-            <h3>Official notices</h3>
+        <div className="sidebar-tabs" role="tablist" aria-label="Sidebar updates">
+          <button
+            aria-selected={sidebarTab === 'official'}
+            className={sidebarTab === 'official' ? 'active' : ''}
+            onClick={() => setSidebarTab('official')}
+            role="tab"
+          >Official notices</button>
+          <button
+            aria-selected={sidebarTab === 'community'}
+            className={sidebarTab === 'community' ? 'active' : ''}
+            onClick={() => setSidebarTab('community')}
+            role="tab"
+          >Community updates</button>
+        </div>
+        {sidebarTab === 'official' ? (
+          <section role="tabpanel" aria-label="Official notices">
+            {snap.notices.length === 0 && <p className="muted">No official notices.</p>}
             {snap.notices.map((n) => <div key={n.id} className="notice"><b>{n.source}</b> · {n.title}</div>)}
-          </>
+          </section>
+        ) : (
+          <section role="tabpanel" aria-label="Community updates">
+            <h3>Live City Feed</h3>
+            {(snap.recent_comments ?? []).slice().reverse().map((comment) => (
+              <button
+                className="feed-comment"
+                key={comment.id}
+                onClick={() => {
+                  const incident = snap.incidents.find((item) => item.id === comment.incident_id)
+                  if (incident) focus(incident)
+                }}
+              >
+                <span><time>{comment.timestamp}</time> · {comment.user} ({comment.district})</span>
+                <b>{comment.text}</b>
+              </button>
+            ))}
+            {(snap.recent_comments ?? []).length === 0 && (
+              <p className="muted">No community updates yet. Open an incident to post one.</p>
+            )}
+          </section>
         )}
       </aside>
 
       <main>
         <MapView onReady={setMap}>
-          <HexLayer cells={snap.cells} category={filter} minDevices={3} />
+          <HexLayer cells={snap.cells} category={filter} minDevices={3}
+            onSelectCell={(cellId) => {
+              const incident = list.find((item) => item.cells8?.includes(cellId))
+              if (incident) focus(incident)
+            }} />
           <BuildingTiles incidents={snap.incidents} onPick={() => {}} />
           <IncidentLayer incidents={list} notices={snap.notices} selectedId={selectedId} onSelect={focus} />
         </MapView>

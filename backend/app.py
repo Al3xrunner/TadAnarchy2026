@@ -31,8 +31,10 @@ def create_app(start_engine=True):
         runner.start()
         app.extensions["runner"] = runner
 
-    from api import director, geo, history, reports, stream
-    for module in (reports, stream, director, geo, history):
+    from api import comments, director, geo, history, reports, stream
+    from api.comments import CommentStore
+    app.extensions["comment_store"] = CommentStore()
+    for module in (reports, stream, comments, director, geo, history):
         app.register_blueprint(module.bp)
 
     from db.load import register_cli

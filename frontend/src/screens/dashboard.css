@@ -33,6 +33,26 @@
 .dashboard .panel .close { position: absolute; right: .6rem; top: .5rem; border: 0; font-size: 1.4rem; background: none; }
 .dashboard .official { background: #eef4fb; border-radius: 8px; padding: .4rem .6rem; }
 .dashboard .notice { font-size: .88rem; padding: .3rem 0; border-bottom: 1px solid var(--line); }
+.dashboard .sidebar-tabs { display: flex; gap: .4rem; border-bottom: 1px solid var(--line); margin-top: 1rem; }
+.dashboard .sidebar-tabs button { border: 0; border-radius: 8px 8px 0 0; color: var(--muted); }
+.dashboard .sidebar-tabs button.active { background: #eef4fb; color: var(--accent); font-weight: 600; }
+.dashboard .feed-comment { display: block; width: 100%; margin: .5rem 0; padding: .6rem .7rem; text-align: left; }
+.dashboard .feed-comment span { display: block; color: var(--muted); font-size: .82rem; }
+.dashboard .feed-comment b { display: block; margin-top: .2rem; overflow-wrap: anywhere; }
+.dashboard .incident-chat { border-top: 1px solid var(--line); margin-top: .8rem; padding-top: .5rem; }
+.dashboard .incident-chat h3 { margin: .25rem 0 .45rem; font-size: 1rem; }
+.dashboard .incident-chat__comments { max-height: 150px; overflow: auto; }
+.dashboard .incident-chat__comments > .muted { margin: .4rem 0; }
+.dashboard .incident-chat__comment { padding: .35rem 0; border-bottom: 1px solid var(--line); font-size: .86rem; }
+.dashboard .incident-chat__comment time { float: right; color: var(--muted); }
+.dashboard .incident-chat__comment p { margin: .2rem 0; overflow-wrap: anywhere; }
+.dashboard .incident-chat__quick { display: flex; flex-wrap: wrap; gap: .3rem; margin: .5rem 0; }
+.dashboard .incident-chat__quick button { padding: .3rem .45rem; font-size: .78rem; }
+.dashboard .incident-chat form { display: flex; gap: .35rem; }
+.dashboard .incident-chat form input { min-width: 0; flex: 1; font: inherit; padding: .45rem; border: 1px solid var(--line); border-radius: 8px; }
+.dashboard .incident-chat form button { padding: .45rem .55rem; font-size: .82rem; }
+.dashboard .incident-chat button:disabled { cursor: not-allowed; opacity: .55; }
+.dashboard .incident-chat__error { color: #b3261e; font-size: .82rem; }
 @media (max-width: 800px) {
   .dashboard { grid-template-columns: 1fr; grid-template-rows: 50vh 50vh; }
   .dashboard main { order: -1; }
